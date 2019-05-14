@@ -43,6 +43,7 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
 
         Returns:
             mxnet.mod.Module: the loaded model.
+
         """
         for f in DEFAULT_MODEL_FILENAMES.values():
             path = os.path.join(model_dir, f)
@@ -66,7 +67,7 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
         return mod
 
     def default_input_fn(self, input_data, content_type):
-        """Take request data and deserialize it into an object for prediction.
+        """Take request data and deserialize it into an MXNet NDArray for prediction.
         When an InvokeEndpoint operation is made against an Endpoint running SageMaker model server,
         the model server receives two pieces of information:
 
@@ -83,8 +84,8 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
             mxnet.nd.array: an MXNet NDArray
 
         Raises:
-            sagemaker_containers.beta.framework.errors.UnsupportedFormatError: if an unsupported
-                content type is used.
+            sagemaker_inference.errors.UnsupportedFormatError: if an unsupported content type is used.
+
         """
         if content_type in self.VALID_CONTENT_TYPES:
             np_array = decoder.decode(input_data, content_type)
@@ -100,11 +101,11 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
             accept (str): the accept content type expected by the client
 
         Returns:
-            sagemaker_containers.beta.framework.worker.Response: a Flask response object
+            obj: prediction data.
 
         Raises:
-            sagemaker_containers.beta.framework.errors.UnsupportedFormatError: if an unsupported
-                accept type is used.
+            sagemaker_inference.errors.UnsupportedFormatError: if an unsupported content type is used.
+
         """
         if accept in self.VALID_CONTENT_TYPES:
             return encoder.encode(prediction.asnumpy().tolist(), accept)
@@ -128,13 +129,14 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
         Args:
             input_data (obj): the request data
             content_type (str): the request's content type
+            model (obj): an MXNet model
 
         Returns:
             mxnet.io.NDArrayIter: data ready for prediction.
 
         Raises:
-            sagemaker_containers.beta.framework.errors.UnsupportedFormatError: if an unsupported
-                accept type is used.
+            sagemaker_inference.errors.UnsupportedFormatError: if an unsupported content type is used.
+
         """
         if content_type not in self.VALID_CONTENT_TYPES:
             raise errors.UnsupportedFormatError(content_type)
@@ -156,9 +158,6 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
 
         # If ndarray has fewer rows than model_batch_size, then pad it with zeros.
         if pad_rows:
-            num_pad_values = pad_rows
-            for dimension in ndarray.shape[1:]:
-                num_pad_values *= dimension
             padding_shape = tuple([pad_rows] + list(ndarray.shape[1:]))
             padding = mx.ndarray.zeros(shape=padding_shape)
             ndarray = mx.ndarray.concat(ndarray, padding, dim=0)
@@ -184,8 +183,9 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
             model (mxnet.module.BaseModule): an MXNet Module
 
         Returns:
-            list: the prediction result. This will be either a list of ``NDArray`` or
-                a list of lists of ``NDArray``
+            list: the prediction result. This will be either a list of ``mxnet.nd.array`` or
+                a list of lists of ``mxnet.nd.array``
+
         """
         return model.predict(data)
 
@@ -200,5 +200,6 @@ class DefaultGluonBlockInferenceHandler(DefaultMXNetInferenceHandler):
 
         Returns:
             mxnet.nd.array: the prediction result
+
         """
         return block(data)
