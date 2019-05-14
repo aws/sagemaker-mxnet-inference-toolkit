@@ -1,27 +1,19 @@
-#  Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
+# Licensed under the Apache License, Version 2.0 (the "License"). You
+# may not use this file except in compliance with the License. A copy of
+# the License is located at
 #
-#  Licensed under the Apache License, Version 2.0 (the "License").
-#  You may not use this file except in compliance with the License.
-#  A copy of the License is located at
+#     http://aws.amazon.com/apache2.0/
 #
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-#  or in the "license" file accompanying this file. This file is distributed
-#  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-#  express or implied. See the License for the specific language governing
-#
-#  or in the "license" file accompanying this file. This file is distributed
-#  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-#  express or implied. See the License for the specific language governing
-#  permissions and limitations under the License.
+# or in the "license" file accompanying this file. This file is
+# distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+# ANY KIND, either express or implied. See the License for the specific
+# language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
-from glob import glob
 import os
-from os.path import basename
-from os.path import splitext
+from glob import glob
 
 from setuptools import find_packages, setup
 
@@ -37,7 +29,7 @@ setup(
 
     packages=find_packages(where='src', exclude=('test',)),
     package_dir={'': 'src'},
-    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
+    py_modules=[os.path.splitext(os.path.basename(path))[0] for path in glob('src/*.py')],
 
     long_description=read('README.rst'),
     author='Amazon Web Services',
