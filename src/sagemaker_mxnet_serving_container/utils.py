@@ -17,18 +17,35 @@ import mxnet as mx
 
 
 def get_default_context():
+    """Get the default context.
+
+    Returns:
+        context : The corresponding CPU context.
+
+    """
     # TODO mxnet ctx - better default, allow user control
     return mx.cpu()
 
 
 def read_data_shapes(path, preferred_batch_size=1):
+    """Read the data name and data shape required by the MXNet module.
+
+    Args:
+        path (str): an MXNet NDArray that is the result of a prediction
+        preferred_batch_size (int): the accept content type expected by the client
+
+    Returns:
+        tuple: A list of names for data required by the module along with
+            a list of (name, shape) pairs specifying the data inputs to this module.
+
+    """
     with open(path, 'r') as f:
-        signature = json.load(f)
+        signatures = json.load(f)
 
     data_names = []
     data_shapes = []
 
-    for s in signature:
+    for s in signatures:
         name = s['name']
         data_names.append(name)
 
