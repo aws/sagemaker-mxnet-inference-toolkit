@@ -12,8 +12,8 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
-import os
 from glob import glob
+import os
 
 from setuptools import find_packages, setup
 
@@ -25,7 +25,7 @@ def read(fname):
 setup(
     name='sagemaker_mxnet_serving_container',
     version='1.0.0',
-    description='Open source library for creating MXNet containers for serving on Amazon SageMaker.',
+    description='Open source library for creating MXNet containers for serving on SageMaker.',
 
     packages=find_packages(where='src', exclude=('test',)),
     package_dir={'': 'src'},
