@@ -24,11 +24,12 @@ MODEL = 'foo'
 
 @patch('importlib.import_module', return_value=object())
 def test_default_transform_fn(import_module):
-    result = 'result'
+    preprocessed_data = 'preprocessed_data'
+    prediction_result = 'result'
     processed_result = 'processed_result'
 
-    input_fn = Mock()
-    predict_fn = Mock(return_value=result)
+    input_fn = Mock(return_value=preprocessed_data)
+    predict_fn = Mock(return_value=prediction_result)
     output_fn = Mock(return_value=processed_result)
 
     module_transformer = MXNetModuleTransformer()
@@ -36,8 +37,9 @@ def test_default_transform_fn(import_module):
     module_transformer._predict_fn = predict_fn
     module_transformer._output_fn = output_fn
 
-    module_transformer._default_transform_fn(MODEL, DATA, CONTENT_TYPE, ACCEPT)
+    result = module_transformer._default_transform_fn(MODEL, DATA, CONTENT_TYPE, ACCEPT)
 
-    assert input_fn.called_once_with(DATA, CONTENT_TYPE, MODEL)
-    assert predict_fn.called_once_with(result, MODEL)
-    assert output_fn.called_once_with(processed_result, ACCEPT)
+    input_fn.assert_called_once_with(DATA, CONTENT_TYPE, MODEL)
+    predict_fn.assert_called_once_with(preprocessed_data, MODEL)
+    output_fn.assert_called_once_with(prediction_result, ACCEPT)
+    assert processed_result == result
