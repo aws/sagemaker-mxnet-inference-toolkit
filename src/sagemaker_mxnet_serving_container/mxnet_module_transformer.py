@@ -32,8 +32,12 @@ class MXNetModuleTransformer(Transformer):
         return result
 
     # The default_input_fn for Modules requires access to the model object.
-    # The input_fn contract only allows access to two parameters.
-    # To not break input_fn that are only expecting two parameters.
+    # Originally, the input_fn allowed for input_data, content_type and model.
+    # https://github.com/aws/sagemaker-python-sdk/tree/a6b26d63e1420bf2283d7981f46a9f58b9163165#model-serving
+    # However, the current documentation indicates only two parameters:
+    # input_data and content_type
+    # Thus the following has to be added to not break input_fn that are
+    # abiding with the current documentation.
     def _call_input_fn(self, input_data, content_type, model):
         try:  # PY3
             argspec = inspect.getfullargspec(self._input_fn)
