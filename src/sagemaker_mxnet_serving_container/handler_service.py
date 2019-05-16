@@ -10,44 +10,47 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
-"""Handler service that is executed by the model server.
-
-This module defines a handle method that is invoked for all incoming inference requests to the model server.
-
-Implementation of: https://github.com/awslabs/mxnet-model-server/blob/master/docs/custom_service.md
-"""
 from __future__ import absolute_import
 
 import importlib
-import mxnet as mx
 
+import mxnet as mx
 from sagemaker_inference import environment
+from sagemaker_inference.default_handler_service import DefaultHandlerService
 from sagemaker_inference.transformer import Transformer
+
+from sagemaker_mxnet_serving_container.default_inference_handler import \
+    DefaultMXNetInferenceHandler, DefaultGluonBlockInferenceHandler
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
 
-from sagemaker_mxnet_serving_container.default_inference_handler import DefaultMXNetInferenceHandler, \
-    DefaultGluonBlockInferenceHandler
 
+class HandlerService(DefaultHandlerService):
+    """Handler service that is executed by the model server.
 
-def user_module_transformer():
-    user_module = importlib.import_module(environment.Environment().module_name)
+    Determines specific default inference handlers to use based on the type MXNet model being used.
 
-    if hasattr(user_module, 'transform_fn'):
-        return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
+    This class extends ``DefaultHandlerService``, which define the following:
+        - The ``handle`` method is invoked for all incoming inference requests to the model server.
+        - The ``initialize`` method is invoked at model server start up.
 
-    model_fn = getattr(user_module, 'model_fn', DefaultMXNetInferenceHandler().default_model_fn)
+    Based on: https://github.com/awslabs/mxnet-model-server/blob/master/docs/custom_service.md
+    """
+    def __init__(self):
+        super(HandlerService, self).__init__(transformer=self._user_module_transformer())
 
-    model = model_fn(environment.model_dir)
-    if isinstance(model, mx.module.BaseModule):
-        return MXNetModuleTransformer()
-    elif isinstance(model, mx.gluon.block.Block):
-        return Transformer(default_inference_handler=DefaultGluonBlockInferenceHandler())
-    else:
-        raise ValueError('Unsupported model type: {}'.format(model.__class__.__name__))
+    @staticmethod
+    def _user_module_transformer():
+        user_module = importlib.import_module(environment.Environment().module_name)
 
+        if hasattr(user_module, 'transform_fn'):
+            return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
 
-_service = user_module_transformer()
+        model_fn = getattr(user_module, 'model_fn', DefaultMXNetInferenceHandler().default_model_fn)
 
-
-def handle(data, context):
-    return _service.transform(data, context)
+        model = model_fn(environment.model_dir)
+        if isinstance(model, mx.module.BaseModule):
+            return MXNetModuleTransformer()
+        elif isinstance(model, mx.gluon.block.Block):
+            return Transformer(default_inference_handler=DefaultGluonBlockInferenceHandler())
+        else:
+            raise ValueError('Unsupported model type: {}'.format(model.__class__.__name__))

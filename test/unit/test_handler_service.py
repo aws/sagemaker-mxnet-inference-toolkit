@@ -17,7 +17,15 @@ import pytest
 from mock import patch, Mock
 from sagemaker_inference.transformer import Transformer
 
+from sagemaker_mxnet_serving_container.handler_service import HandlerService
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
+
+
+@patch('sagemaker_mxnet_serving_container.handler_service.HandlerService._user_module_transformer')
+def test_handler_service(user_module_transformer):
+    service = HandlerService()
+
+    assert service._service == user_module_transformer()
 
 
 class UserModuleTransformFn:
@@ -27,9 +35,7 @@ class UserModuleTransformFn:
 
 @patch('importlib.import_module', return_value=UserModuleTransformFn())
 def test_user_module_transform_fn(import_module):
-    from sagemaker_mxnet_serving_container import handler_service
-
-    transformer = handler_service.user_module_transformer()
+    transformer = HandlerService._user_module_transformer()
 
     assert transformer._transform_fn == import_module.return_value.transform_fn
     assert isinstance(transformer, Transformer)
@@ -46,9 +52,7 @@ class UserModuleModelFn:
 def test_user_module_mxnet_module_transformer(import_module, input_fn, predict_fn):
     import_module.return_value.model_fn.return_value = mx.module.BaseModule()
 
-    from sagemaker_mxnet_serving_container import handler_service
-
-    transformer = handler_service.user_module_transformer()
+    transformer = HandlerService._user_module_transformer()
 
     assert isinstance(transformer, MXNetModuleTransformer)
     assert transformer._input_fn == input_fn
@@ -61,9 +65,7 @@ def test_user_module_mxnet_module_transformer(import_module, input_fn, predict_f
 def test_user_module_mxnet_gluon_transformer(import_module, predict_fn, model_fn):
     model_fn.return_value = mx.gluon.block.Block()
 
-    from sagemaker_mxnet_serving_container import handler_service
-
-    transformer = handler_service.user_module_transformer()
+    transformer = HandlerService._user_module_transformer()
 
     assert isinstance(transformer, Transformer)
     assert transformer._predict_fn == predict_fn
@@ -72,24 +74,7 @@ def test_user_module_mxnet_gluon_transformer(import_module, predict_fn, model_fn
 
 @patch('importlib.import_module', return_value=UserModuleModelFn())
 def test_user_module_unsupported(import_module):
-    from sagemaker_mxnet_serving_container import handler_service
-
     with pytest.raises(ValueError) as e:
-        handler_service.user_module_transformer()
+        HandlerService._user_module_transformer()
 
     assert 'Unsupported model type' in str(e)
-
-
-@patch('importlib.import_module', return_value=UserModuleTransformFn())
-def test_handle(import_module):
-    from sagemaker_mxnet_serving_container import handler_service
-
-    service = Mock()
-    handler_service._service = service
-
-    data = Mock()
-    context = Mock()
-
-    handler_service.handle(data, context)
-
-    assert service.called_once_with(data, context)
