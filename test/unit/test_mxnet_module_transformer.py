@@ -20,26 +20,55 @@ CONTENT_TYPE = 'content'
 ACCEPT = 'accept'
 DATA = 'data'
 MODEL = 'foo'
+EMPTY_ARG_SPEC = list()
+ARG_SPEC_WITH_MODEL = ['model']
+
+PREPROCESSED_DATA = 'preprocessed_data'
+
+
+def _input_fn_with_model(input_data, content_type, model):
+    return PREPROCESSED_DATA
 
 
 @patch('importlib.import_module', return_value=object())
 def test_default_transform_fn(import_module):
-    preprocessed_data = 'preprocessed_data'
     prediction_result = 'result'
     processed_result = 'processed_result'
 
-    input_fn = Mock(return_value=preprocessed_data)
     predict_fn = Mock(return_value=prediction_result)
     output_fn = Mock(return_value=processed_result)
 
     module_transformer = MXNetModuleTransformer()
-    module_transformer._input_fn = input_fn
+    module_transformer._input_fn = _input_fn_with_model
     module_transformer._predict_fn = predict_fn
     module_transformer._output_fn = output_fn
 
     result = module_transformer._default_transform_fn(MODEL, DATA, CONTENT_TYPE, ACCEPT)
 
-    input_fn.assert_called_once_with(DATA, CONTENT_TYPE, MODEL)
-    predict_fn.assert_called_once_with(preprocessed_data, MODEL)
+    predict_fn.assert_called_once_with(PREPROCESSED_DATA, MODEL)
     output_fn.assert_called_once_with(prediction_result, ACCEPT)
     assert processed_result == result
+
+
+@patch('importlib.import_module', return_value=object())
+def test_call_input_fn(import_module):
+    module_transformer = MXNetModuleTransformer()
+    module_transformer._input_fn = _input_fn_with_model
+
+    result = module_transformer._call_input_fn(DATA, CONTENT_TYPE, MODEL)
+
+    assert PREPROCESSED_DATA == result
+
+
+def _input_fn_without_model(input_data, content_type):
+    return PREPROCESSED_DATA
+
+
+@patch('importlib.import_module', return_value=object())
+def test_call_input_fn_without_model_arg(import_module):
+    module_transformer = MXNetModuleTransformer()
+    module_transformer._input_fn = _input_fn_without_model
+
+    result = module_transformer._call_input_fn(MODEL, DATA, CONTENT_TYPE)
+
+    assert PREPROCESSED_DATA == result
