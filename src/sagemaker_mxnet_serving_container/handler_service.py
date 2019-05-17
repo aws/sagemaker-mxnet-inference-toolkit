@@ -34,6 +34,7 @@ class HandlerService(DefaultHandlerService):
         - The ``initialize`` method is invoked at model server start up.
 
     Based on: https://github.com/awslabs/mxnet-model-server/blob/master/docs/custom_service.md
+
     """
     def __init__(self):
         super(HandlerService, self).__init__(transformer=self._user_module_transformer())
