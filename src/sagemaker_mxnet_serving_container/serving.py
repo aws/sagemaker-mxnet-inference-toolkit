@@ -12,16 +12,13 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
-import logging
 import os
 
 from sagemaker_inference import model_server
 
-import sagemaker_mxnet_serving_container.handler_service
+from sagemaker_mxnet_serving_container import handler_service
 
-logger = logging.getLogger(__name__)
-
-HANDLER_SERVICE = sagemaker_mxnet_serving_container.handler_service.__name__
+HANDLER_SERVICE = handler_service.__name__
 
 DEFAULT_ENV_VARS = {
     'MXNET_CPU_WORKER_NTHREADS': '1',

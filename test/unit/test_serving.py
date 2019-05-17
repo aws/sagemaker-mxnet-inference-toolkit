@@ -16,7 +16,7 @@ import os
 
 from mock import patch
 
-from sagemaker_mxnet_serving_container.serving import main, DEFAULT_ENV_VARS, _update_mxnet_env_vars, HANDLER_SERVICE
+from sagemaker_mxnet_serving_container.serving import _update_mxnet_env_vars, DEFAULT_ENV_VARS, HANDLER_SERVICE, main
 
 
 @patch('sagemaker_inference.model_server.start_model_server')
