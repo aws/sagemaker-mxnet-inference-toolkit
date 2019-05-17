@@ -19,8 +19,8 @@ from sagemaker_inference import environment
 from sagemaker_inference.default_handler_service import DefaultHandlerService
 from sagemaker_inference.transformer import Transformer
 
-from sagemaker_mxnet_serving_container.default_inference_handler import \
-    DefaultMXNetInferenceHandler, DefaultGluonBlockInferenceHandler
+from sagemaker_mxnet_serving_container.default_inference_handler import DefaultGluonBlockInferenceHandler, \
+    DefaultMXNetInferenceHandler
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
 
 

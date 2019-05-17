@@ -15,9 +15,9 @@ from __future__ import absolute_import
 import os
 
 import mxnet as mx
-from sagemaker_inference import encoder, errors, decoder, content_types, default_inference_handler
+from sagemaker_inference import content_types, decoder, default_inference_handler, encoder, errors
 
-from sagemaker_mxnet_serving_container.utils import read_data_shapes, get_default_context
+from sagemaker_mxnet_serving_container.utils import get_default_context, read_data_shapes
 
 PREFERRED_BATCH_SIZE_PARAM = 'SAGEMAKER_DEFAULT_MODEL_FIRST_DIMENSION_SIZE'
 INFERENCE_ACCELERATOR_PRESENT_ENV = 'SAGEMAKER_INFERENCE_ACCELERATOR_PRESENT'
@@ -39,7 +39,8 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
 
         Args:
             model_dir (str): The directory where model files are stored
-            preferred_batch_size (int): The preferred batch size of the model's data shape (default: 1)
+            preferred_batch_size (int): preferred batch size of the model's data shape.
+                Defaults to 1.
 
         Returns:
             mxnet.mod.Module: the loaded model.
@@ -162,8 +163,7 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
             padding = mx.ndarray.zeros(shape=padding_shape)
             ndarray = mx.ndarray.concat(ndarray, padding, dim=0)
 
-        model_input = mx.io.NDArrayIter(ndarray, batch_size=model_batch_size,
-                                        last_batch_handle='pad')
+        model_input = mx.io.NDArrayIter(ndarray, batch_size=model_batch_size, last_batch_handle='pad')
 
         if pad_rows:
             # Update the getpad method on the model_input data iterator to return the amount of

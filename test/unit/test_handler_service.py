@@ -12,9 +12,9 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
+from mock import Mock, patch
 import mxnet as mx
 import pytest
-from mock import patch, Mock
 from sagemaker_inference.transformer import Transformer
 
 from sagemaker_mxnet_serving_container.handler_service import HandlerService
@@ -60,7 +60,7 @@ def test_user_module_mxnet_module_transformer(import_module, input_fn, predict_f
 
 
 @patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultMXNetInferenceHandler.default_model_fn')
-@patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultGluonBlockInferenceHandler.default_predict_fn')
+@patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultGluonBlockInferenceHandler.default_predict_fn')  # noqa E501
 @patch('importlib.import_module', return_value=object())
 def test_user_module_mxnet_gluon_transformer(import_module, predict_fn, model_fn):
     model_fn.return_value = mx.gluon.block.Block()
