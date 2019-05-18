@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import inspect
 
 from sagemaker_inference.transformer import Transformer
+
 from sagemaker_mxnet_serving_container.default_inference_handler import DefaultModuleInferenceHandler
 
 

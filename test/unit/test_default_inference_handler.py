@@ -15,14 +15,13 @@ from __future__ import absolute_import
 import json
 import os
 
+from mock import call, Mock, mock_open, patch
 import mxnet as mx
 import pytest
+from sagemaker_inference import content_types, errors
 
-from mock import patch, Mock, mock_open, call
-from sagemaker_inference import errors, content_types
-
-from sagemaker_mxnet_serving_container.default_inference_handler import DefaultMXNetInferenceHandler, \
-    DefaultModuleInferenceHandler, DefaultGluonBlockInferenceHandler
+from sagemaker_mxnet_serving_container.default_inference_handler import DefaultGluonBlockInferenceHandler, \
+    DefaultModuleInferenceHandler, DefaultMXNetInferenceHandler
 
 MODEL_DIR = 'foo/model'
 
@@ -31,8 +30,7 @@ MODEL_DIR = 'foo/model'
 
 
 def test_default_mxnet_valid_content_types():
-    assert DefaultMXNetInferenceHandler().VALID_CONTENT_TYPES == \
-           (content_types.JSON, content_types.NPY)
+    assert DefaultMXNetInferenceHandler().VALID_CONTENT_TYPES == (content_types.JSON, content_types.NPY)
 
 
 @patch('mxnet.cpu')
@@ -162,7 +160,7 @@ def test_mxnet_default_output_fn_invalid_content_type():
 
 def test_default_module_valid_content_types():
     assert DefaultModuleInferenceHandler().VALID_CONTENT_TYPES == \
-           (content_types.JSON, content_types.CSV, content_types.NPY)
+        (content_types.JSON, content_types.CSV, content_types.NPY)
 
 
 @patch('mxnet.io.NDArrayIter')
@@ -219,8 +217,7 @@ def test_module_default_input_fn_with_npy(decode, mx_ndarray_iter):
 @patch('mxnet.io.NDArrayIter')
 @patch('sagemaker_inference.decoder.decode', return_value=[0])
 @patch.dict(os.environ, {'SAGEMAKER_INFERENCE_ACCELERATOR_PRESENT': 'true'}, clear=True)
-def test_module_default_input_fn_with_accelerator(decode, mx_ndarray_iter, mx_ndarray,
-                                                              mx_eia):
+def test_module_default_input_fn_with_accelerator(decode, mx_ndarray_iter, mx_ndarray, mx_eia):
     ndarray = Mock(shape=(1, (1,)))
     ndarray.as_in_context.return_value = ndarray
     mx_ndarray.return_value = ndarray

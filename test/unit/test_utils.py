@@ -14,7 +14,7 @@ from __future__ import absolute_import
 
 import json
 
-from mock import Mock, patch, mock_open
+from mock import Mock, mock_open, patch
 
 from sagemaker_mxnet_serving_container.utils import get_default_context, read_data_shapes
 
