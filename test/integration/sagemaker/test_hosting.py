@@ -25,13 +25,14 @@ MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model.tar.gz')
 SCRIPT_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model', 'code', 'empty_module.py')
 
 
-def test_hosting(sagemaker_session, ecr_image, instance_type):
+def test_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
     prefix = 'mxnet-serving/default-handlers'
     model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=prefix)
     model = MXNetModel(model_data,
                        'SageMakerRole',
                        SCRIPT_PATH,
                        image=ecr_image,
+                       framework_version=framework_version,
                        sagemaker_session=sagemaker_session)
 
     endpoint_name = utils.unique_name_from_base('test-mxnet-serving')
