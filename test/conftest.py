@@ -18,6 +18,7 @@ import os
 import boto3
 import pytest
 from sagemaker import LocalSession, Session
+from sagemaker.mxnet import MXNet
 
 logger = logging.getLogger(__name__)
 logging.getLogger('boto').setLevel(logging.INFO)
@@ -32,7 +33,7 @@ SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 def pytest_addoption(parser):
     parser.addoption('--docker-base-name', default='preprod-mxnet-serving')
     parser.addoption('--region', default='us-west-2')
-    parser.addoption('--framework-version', default='1.4.0')
+    parser.addoption('--framework-version', default=MXNet.LATEST_VERSION)
     parser.addoption('--py-version', default='3', choices=['2', '3'])
     parser.addoption('--processor', default='cpu', choices=['gpu', 'cpu'])
     parser.addoption('--aws-id', default=None)

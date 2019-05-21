@@ -45,8 +45,8 @@ def pretrained_model_data(region):
 
 @pytest.mark.skip_if_non_supported_ei_region
 @pytest.mark.skip_if_no_accelerator
-def test_deploy_elastic_inference_with_pretrained_model(pretrained_model_data, ecr_image, sagemaker_session,
-                                                        instance_type, accelerator_type, framework_version):
+def test_deploy_elastic_inference(pretrained_model_data, ecr_image, sagemaker_session,
+                                  instance_type, accelerator_type, framework_version):
     endpoint_name = 'test-mxnet-ei-deploy-model-{}'.format(sagemaker_timestamp())
 
     with timeout_and_delete_endpoint_by_name(endpoint_name=endpoint_name, sagemaker_session=sagemaker_session,
