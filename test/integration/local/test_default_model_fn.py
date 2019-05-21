@@ -48,6 +48,7 @@ def test_default_model_fn(predictor):
     assert [[4.9999918937683105]] == output
 
 
-def test_default_model_fn_via_requests(predictor):
+def test_default_model_fn_content_type(predictor):
     r = requests.post('http://localhost:8080/invocations', json=[[1, 2]])
+    assert 'application/json' == r.headers['Content-Type']
     assert [[4.9999918937683105]] == r.json()
