@@ -15,10 +15,15 @@ from __future__ import absolute_import
 from mock import Mock, patch
 import mxnet as mx
 import pytest
+from sagemaker_inference import environment
+from sagemaker_inference.default_inference_handler import DefaultInferenceHandler
 from sagemaker_inference.transformer import Transformer
 
+from sagemaker_mxnet_serving_container.default_inference_handler import DefaultGluonBlockInferenceHandler
 from sagemaker_mxnet_serving_container.handler_service import HandlerService
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
+
+MODULE_NAME = 'module_name'
 
 
 @patch('sagemaker_mxnet_serving_container.handler_service.HandlerService._user_module_transformer')
@@ -33,11 +38,14 @@ class UserModuleTransformFn:
         self.transform_fn = Mock()
 
 
+@patch('sagemaker_inference.environment.Environment')
 @patch('importlib.import_module', return_value=UserModuleTransformFn())
-def test_user_module_transform_fn(import_module):
+def test_user_module_transform_fn(import_module, env):
+    env.return_value.module_name = MODULE_NAME
     transformer = HandlerService._user_module_transformer()
 
-    assert transformer._transform_fn == import_module.return_value.transform_fn
+    import_module.assert_called_once_with(MODULE_NAME)
+    assert isinstance(transformer._default_inference_handler, DefaultInferenceHandler)
     assert isinstance(transformer, Transformer)
 
 
@@ -46,35 +54,40 @@ class UserModuleModelFn:
         self.model_fn = Mock()
 
 
-@patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultModuleInferenceHandler.default_predict_fn')
-@patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultModuleInferenceHandler.default_input_fn')
+@patch('sagemaker_inference.environment.Environment')
 @patch('importlib.import_module', return_value=UserModuleModelFn())
-def test_user_module_mxnet_module_transformer(import_module, input_fn, predict_fn):
+def test_user_module_mxnet_module_transformer(import_module, env):
+    env.return_value.module_name = MODULE_NAME
     import_module.return_value.model_fn.return_value = mx.module.BaseModule()
 
     transformer = HandlerService._user_module_transformer()
 
+    import_module.assert_called_once_with(MODULE_NAME)
     assert isinstance(transformer, MXNetModuleTransformer)
-    assert transformer._input_fn == input_fn
-    assert transformer._predict_fn == predict_fn
 
 
+@patch('sagemaker_inference.environment.Environment')
 @patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultMXNetInferenceHandler.default_model_fn')
-@patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultGluonBlockInferenceHandler.default_predict_fn')  # noqa E501
 @patch('importlib.import_module', return_value=object())
-def test_user_module_mxnet_gluon_transformer(import_module, predict_fn, model_fn):
+def test_default_inference_handler_mxnet_gluon_transformer(import_module, model_fn, env):
+    env.return_value.module_name = MODULE_NAME
     model_fn.return_value = mx.gluon.block.Block()
 
     transformer = HandlerService._user_module_transformer()
 
+    import_module.assert_called_once_with(MODULE_NAME)
+    model_fn.assert_called_once_with(environment.model_dir)
     assert isinstance(transformer, Transformer)
-    assert transformer._predict_fn == predict_fn
-    assert transformer._model_fn == model_fn
+    assert isinstance(transformer._default_inference_handler, DefaultGluonBlockInferenceHandler)
 
 
+@patch('sagemaker_inference.environment.Environment')
 @patch('importlib.import_module', return_value=UserModuleModelFn())
-def test_user_module_unsupported(import_module):
+def test_user_module_unsupported(import_module, env):
+    env.return_value.module_name = MODULE_NAME
+
     with pytest.raises(ValueError) as e:
         HandlerService._user_module_transformer()
 
+    import_module.assert_called_once_with(MODULE_NAME)
     assert 'Unsupported model type' in str(e)
