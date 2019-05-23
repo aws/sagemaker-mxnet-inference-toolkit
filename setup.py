@@ -45,6 +45,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.6',
     ],
+
     # We don't declare our dependency on mxnet here because we build with
     # different packages for different variants (e.g. mxnet-mkl and mxnet-cu90).
     install_requires=['sagemaker-inference==1.0.0'],
