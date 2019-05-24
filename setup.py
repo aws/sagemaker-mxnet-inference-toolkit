@@ -24,7 +24,7 @@ def read(fname):
 
 setup(
     name='sagemaker_mxnet_serving_container',
-    version='1.0.0',
+    version=read('VERSION').strip(),
     description='Open source library for creating MXNet containers for serving on SageMaker.',
 
     packages=find_packages(where='src', exclude=('test',)),
@@ -46,7 +46,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    install_requires=['sagemaker-inference==1.0.0'],
+    install_requires=['sagemaker-inference==1.0.1'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'mock',
                  'sagemaker==1.23.0', 'docker-compose', 'mxnet==1.4.0', 'awslogs']

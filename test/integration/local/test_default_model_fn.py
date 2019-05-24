@@ -39,7 +39,7 @@ def predictor(docker_image, sagemaker_local_session, local_instance_type):
             predictor = model.deploy(1, local_instance_type)
             yield predictor
         finally:
-            sagemaker_local_session.delete_endpoint(model.endpoint_name)
+            predictor.delete_endpoint()
 
 
 def test_default_model_fn(predictor):
