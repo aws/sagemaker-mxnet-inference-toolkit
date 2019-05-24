@@ -38,7 +38,7 @@ Building Images
 
 The Dockerfiles in this repository are intended to be used for building Docker images to run inference endpoints on `Amazon SageMaker <https://aws.amazon.com/documentation/sagemaker/>`__.
 
-The current master branch of this repository contains Dockerfiles and support code for MXNet versions 1.4.0 and higher.
+The current master branch of this repository contains Dockerfiles and support code for MXNet versions 1.4.0 and higher. For previous versions, see `SageMaker MXNet container <https://github.com/aws/sagemaker-mxnet-container>`__.
 
 Before building these images, you need to have the pip-installable binary of this repository.
 
@@ -65,12 +65,12 @@ To build an image:
     # CPU
     docker build -t preprod-mxnet-serving:<tag> \
                  --build-arg py_version=<python_version> \
-                 -f docker/<MXNet_version>/final/Dockerfile.cpu .
+                 -f docker/<mxnet_version>/final/Dockerfile.cpu .
 
     # GPU
     docker build -t preprod-mxnet-serving:<tag> \
                  --build-arg py_version=<python_version> \
-                 -f docker/<MXNet_version>/final/Dockerfile.gpu .
+                 -f docker/<mxnet_version>/final/Dockerfile.gpu .
 
 Don't forget the period at the end of the command!
 
@@ -94,7 +94,7 @@ models, with more frameworks coming soon.
 
 Support for using MXNet with Amazon Elastic Inference in SageMaker is supported in the public SageMaker MXNet containers.
 
-* For information on how to use the Python SDK to create an endpoint with Amazon Elastic Inference and MXNet in SageMaker, see `Deploying MXNet Models <https://github.com/aws/sagemaker-python-sdk/tree/master/src/sagemaker/mxnet#deploying-mxnet-models>`__.
+* For information on how to use the Python SDK to create an endpoint with Amazon Elastic Inference and MXNet in SageMaker, see `Deploying MXNet Models <https://sagemaker.readthedocs.io/en/stable/using_mxnet.html#deploying-mxnet-models>`__.
 * For information on how Amazon Elastic Inference works, see `How EI Works <https://docs.aws.amazon.com/sagemaker/latest/dg/ei.html#ei-how-it-works>`__.
 * For more information in regards to using Amazon Elastic Inference in SageMaker, see `Amazon SageMaker Elastic Inference <https://docs.aws.amazon.com/sagemaker/latest/dg/ei.html>`__.
 * For notebook examples on how to use Amazon Elastic Inference with MXNet through the Python SDK in SageMaker, see `EI Sample Notebooks <https://docs.aws.amazon.com/sagemaker/latest/dg/ei.html#ei-intro-sample-nb>`__.
