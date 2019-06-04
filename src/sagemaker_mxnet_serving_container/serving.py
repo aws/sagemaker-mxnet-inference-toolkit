@@ -13,6 +13,7 @@
 from __future__ import absolute_import
 
 import os
+import time
 
 from sagemaker_inference import model_server
 
@@ -36,4 +37,6 @@ def _update_mxnet_env_vars():
 
 def main():
     _update_mxnet_env_vars()
+
+    time.sleep(5)
     model_server.start_model_server(handler_service=HANDLER_SERVICE)
