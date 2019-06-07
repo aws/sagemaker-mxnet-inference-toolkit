@@ -58,7 +58,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-RUN mkdir -p /home/model-server/tmp
+RUN useradd -m model-server \
+    && mkdir -p /home/model-server/tmp \
+    && chown -R model-server /home/model-server
 
 COPY mms-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
 COPY config.properties /home/model-server
