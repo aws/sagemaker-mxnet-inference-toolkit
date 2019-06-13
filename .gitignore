@@ -1,0 +1,10 @@
+dist
+**/*.egg-info
+**/__pycache__
+.pytest_cache
+**/*.pyc
+.tox/*
+.coverage
+test/resources/local_mode_lock
+.idea/*
+*~
