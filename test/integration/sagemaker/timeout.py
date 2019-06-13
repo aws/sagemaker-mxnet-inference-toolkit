@@ -74,7 +74,7 @@ def timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session, second
                     _show_logs(endpoint_name, 'Endpoints', sagemaker_session)
                     if no_errors:
                         _cleanup_logs(endpoint_name, 'Endpoints', sagemaker_session)
-                    return
+                    break
                 except ClientError as ce:
                     if ce.response['Error']['Code'] == 'ValidationException':
                         # avoids the inner exception to be overwritten
@@ -102,7 +102,7 @@ def timeout_and_delete_model_with_transformer(transformer, sagemaker_session, se
                     _show_logs(transformer.model_name, 'Models', sagemaker_session)
                     if no_errors:
                         _cleanup_logs(transformer.model_name, 'Models', sagemaker_session)
-                        return
+                        break
                 except ClientError as ce:
                     if ce.response['Error']['Code'] == 'ValidationException':
                         pass
