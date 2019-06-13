@@ -50,8 +50,8 @@ setup(
     # different packages for different variants (e.g. mxnet-mkl and mxnet-cu90).
     install_requires=['sagemaker-inference==1.0.0'],
     extras_require={
-        'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'mock', 'sagemaker',
-                 'docker-compose', 'mxnet==1.4.0']
+        'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'mock',
+                 'sagemaker==1.23.0', 'docker-compose', 'awslogs']
     },
 
     entry_points={
