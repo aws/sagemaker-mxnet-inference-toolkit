@@ -44,7 +44,7 @@ def test_batch_transform(sagemaker_session, ecr_image, instance_type, framework_
     with timeout.timeout_and_delete_model_with_transformer(transformer, sagemaker_session, minutes=20):
         input_data = sagemaker_session.upload_data(path=DATA_PATH, key_prefix=s3_prefix)
 
-        job_name = utils.unique_name_from_base('test-mxnet-serving')
+        job_name = utils.unique_name_from_base('test-mxnet-serving-batch')
         transformer.transform(input_data, content_type='text/csv', job_name=job_name)
         transformer.wait()
 
