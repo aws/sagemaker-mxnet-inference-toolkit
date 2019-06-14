@@ -33,7 +33,7 @@ def test_gluon_hosting(docker_image, sagemaker_local_session, local_instance_typ
                        image=docker_image,
                        sagemaker_session=sagemaker_local_session)
 
-    with open(os.path.join(RESOURCE_PATH, 'mnist_images', '04.json'), 'r') as f:
+    with open(os.path.join(RESOURCE_PATH, 'mnist', 'images', '04.json'), 'r') as f:
         input = json.load(f)
 
     with local_mode_utils.lock():
