@@ -1,15 +1,15 @@
-#  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
-#  Licensed under the Apache License, Version 2.0 (the "License").
-#  You may not use this file except in compliance with the License.
-#  A copy of the License is located at
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-#  or in the "license" file accompanying this file. This file is distributed
-#  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-#  express or implied. See the License for the specific language governing
-#  permissions and limitations under the License.
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
 from __future__ import absolute_import
 
 import json
@@ -33,7 +33,7 @@ def test_gluon_hosting(docker_image, sagemaker_local_session, local_instance_typ
                        image=docker_image,
                        sagemaker_session=sagemaker_local_session)
 
-    with open(os.path.join(RESOURCE_PATH, 'mnist_images', '04.json'), 'r') as f:
+    with open(os.path.join(RESOURCE_PATH, 'mnist', 'images', '04.json'), 'r') as f:
         input = json.load(f)
 
     with local_mode_utils.lock():
