@@ -15,3 +15,7 @@ from __future__ import absolute_import
 import os
 
 RESOURCE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'resources'))
+
+# EI is currently only supported in the following regions
+# regions were derived from https://aws.amazon.com/machine-learning/elastic-inference/pricing/
+EI_SUPPORTED_REGIONS = ['us-east-1', 'us-east-2', 'us-west-2', 'eu-west-1', 'ap-northeast-1', 'ap-northeast-2']
