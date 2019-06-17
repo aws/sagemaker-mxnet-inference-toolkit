@@ -158,7 +158,7 @@ You Docker image must also be built in order to run the tests against it.
 
 Local integration tests use the following pytest arguments:
 
-- ``docker-base-name``: the Docker image's repository. Defaults to 'preprod-mxnet'.
+- ``docker-base-name``: the Docker image's repository. Defaults to 'preprod-mxnet-serving'.
 - ``framework-version``: the MXNet version. Defaults to the latest supported version.
 - ``py-version``: the Python version. Defaults to '3'.
 - ``processor``: CPU or GPU. Defaults to 'cpu'.
@@ -212,9 +212,9 @@ To run SageMaker integration tests:
 
     # Example
     pytest test/integration/sagemaker --aws-id 12345678910 \
-                                      --docker-base-name preprod-mxnet \
+                                      --docker-base-name preprod-mxnet-serving \
                                       --instance-type ml.m4.xlarge \
-                                      --tag 1.3.0-cpu-py3
+                                      --tag 1.4.0-cpu-py3
 
 If you want to run a SageMaker end to end test for your Elastic Inference container, you will need to provide an ``accelerator_type`` as an additional pytest argument.
 
@@ -224,7 +224,7 @@ The ``accelerator-type`` is your specified `Amazon Elastic Inference Accelerator
 
     # Example for running Elastic Inference SageMaker end to end test
     pytest test/integration/sagemaker/test_elastic_inference.py --aws-id 12345678910 \
-                                                                --docker-base-name preprod-mxnet \
+                                                                --docker-base-name preprod-mxnet-serving \
                                                                 --instance-type ml.m4.xlarge \
                                                                 --accelerator-type ml.eia1.medium \
                                                                 --tag 1.0
