@@ -203,7 +203,7 @@ To run SageMaker integration tests:
 
 ::
 
-    pytest test/integration/sagmaker --aws-id <your_aws_id> \
+    tox test/integration/sagmaker -- --aws-id <your_aws_id> \
                                      --docker-base-name <your_docker_image> \
                                      --instance-type <amazon_sagemaker_instance_type> \
                                      --tag <your_docker_image_tag> \
@@ -211,7 +211,7 @@ To run SageMaker integration tests:
 ::
 
     # Example
-    pytest test/integration/sagemaker --aws-id 12345678910 \
+    tox test/integration/sagemaker -- --aws-id 12345678910 \
                                       --docker-base-name preprod-mxnet-serving \
                                       --instance-type ml.m4.xlarge \
                                       --tag 1.4.0-cpu-py3
@@ -223,7 +223,7 @@ The ``accelerator-type`` is your specified `Amazon Elastic Inference Accelerator
 ::
 
     # Example for running Elastic Inference SageMaker end to end test
-    pytest test/integration/sagemaker/test_elastic_inference.py --aws-id 12345678910 \
+    tox test/integration/sagemaker/test_elastic_inference.py -- --aws-id 12345678910 \
                                                                 --docker-base-name preprod-mxnet-serving \
                                                                 --instance-type ml.m4.xlarge \
                                                                 --accelerator-type ml.eia1.medium \
