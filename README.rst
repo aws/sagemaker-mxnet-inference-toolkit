@@ -187,6 +187,7 @@ SageMaker Integration Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SageMaker integration tests require your Docker image to be within an `Amazon ECR repository <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_Console_Repositories.html>`__.
+They also require that you have the setup described under "Integration Tests" at https://github.com/aws/sagemaker-python-sdk#running-tests.
 
 SageMaker integration tests use the following pytest arguments:
 
