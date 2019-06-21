@@ -62,11 +62,12 @@ RUN useradd -m model-server \
     && mkdir -p /home/model-server/tmp \
     && chown -R model-server /home/model-server
 
-COPY mms-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+COPY mms-entrypoint.py /usr/local/bin/dockerd-entrypoint.py
 COPY config.properties /home/model-server
 
-RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.py
 
 EXPOSE 8080 8081
 ENV TEMP=/home/model-server/tmp
+ENTRYPOINT ["python", "/usr/local/bin/dockerd-entrypoint.py"]
 CMD ["serve"]
