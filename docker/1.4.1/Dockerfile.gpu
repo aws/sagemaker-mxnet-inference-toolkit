@@ -70,4 +70,4 @@ RUN chmod +x /usr/local/bin/dockerd-entrypoint.py
 EXPOSE 8080 8081
 ENV TEMP=/home/model-server/tmp
 ENTRYPOINT ["python", "/usr/local/bin/dockerd-entrypoint.py"]
-CMD ["serve"]
+CMD ["mxnet-model-server", "--start", "--mms-config", "/home/model-server/config.properties"]
