@@ -38,5 +38,8 @@ def _update_mxnet_env_vars():
 def main():
     _update_mxnet_env_vars()
 
+    # there's a race condition that causes the model server command to
+    # sometimes fail with 'bad address'. more investigation needed.
     time.sleep(5)
+
     model_server.start_model_server(handler_service=HANDLER_SERVICE)
