@@ -18,7 +18,7 @@ from sagemaker import utils
 from sagemaker.mxnet.model import MXNetModel
 
 from test.integration import RESOURCE_PATH
-import timeout
+from test.integration.sagemaker import timeout
 
 DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, 'default_handlers')
 MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model.tar.gz')
