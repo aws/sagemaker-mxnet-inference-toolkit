@@ -1,15 +1,15 @@
-#  Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
-#  Licensed under the Apache License, Version 2.0 (the "License").
-#  You may not use this file except in compliance with the License.
-#  A copy of the License is located at
+# Licensed under the Apache License, Version 2.0 (the "License").
+# You may not use this file except in compliance with the License.
+# A copy of the License is located at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-#  or in the "license" file accompanying this file. This file is distributed
-#  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-#  express or implied. See the License for the specific language governing
-#  permissions and limitations under the License.
+# or in the "license" file accompanying this file. This file is distributed
+# on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+# express or implied. See the License for the specific language governing
+# permissions and limitations under the License.
 from __future__ import absolute_import
 
 import logging
@@ -19,6 +19,8 @@ import boto3
 import pytest
 from sagemaker import LocalSession, Session
 from sagemaker.mxnet import MXNet
+
+from test.integration import NO_P2_REGIONS, NO_P3_REGIONS
 
 logger = logging.getLogger(__name__)
 logging.getLogger('boto').setLevel(logging.INFO)
@@ -115,3 +117,11 @@ def sagemaker_local_session(region):
 @pytest.fixture(scope='session')
 def local_instance_type(processor):
     return 'local' if processor == 'cpu' else 'local_gpu'
+
+
+@pytest.fixture(autouse=True)
+def skip_gpu_instance_restricted_regions(region, instance_type):
+    no_p2 = region in NO_P2_REGIONS and instance_type.startswith('ml.p2')
+    no_p3 = region in NO_P3_REGIONS and instance_type.startswith('ml.p3')
+    if no_p2 or no_p3:
+        pytest.skip('Skipping GPU test in region {} to avoid insufficient capacity'.format(region))

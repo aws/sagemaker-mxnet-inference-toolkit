@@ -88,7 +88,7 @@ Don't forget the period at the end of the command!
 Amazon Elastic Inference with MXNet in SageMaker
 ------------------------------------------------
 `Amazon Elastic Inference <https://aws.amazon.com/machine-learning/elastic-inference/>`__ allows you to to attach
-low-cost GPU-powered acceleration to Amazon EC2 and Amazon SageMaker instances to reduce the cost running deep
+low-cost GPU-powered acceleration to Amazon EC2 and Amazon SageMaker instances to reduce the cost of running deep
 learning inference by up to 75%. Currently, Amazon Elastic Inference supports TensorFlow, Apache MXNet, and ONNX
 models, with more frameworks coming soon.
 
@@ -158,7 +158,7 @@ You Docker image must also be built in order to run the tests against it.
 
 Local integration tests use the following pytest arguments:
 
-- ``docker-base-name``: the Docker image's repository. Defaults to 'preprod-mxnet'.
+- ``docker-base-name``: the Docker image's repository. Defaults to 'preprod-mxnet-serving'.
 - ``framework-version``: the MXNet version. Defaults to the latest supported version.
 - ``py-version``: the Python version. Defaults to '3'.
 - ``processor``: CPU or GPU. Defaults to 'cpu'.
@@ -183,6 +183,52 @@ To run local integration tests:
                                   --framework-version 1.4.0 \
                                   --processor cpu
 
+SageMaker Integration Tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SageMaker integration tests require your Docker image to be within an `Amazon ECR repository <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ECS_Console_Repositories.html>`__.
+They also require that you have the setup described under "Integration Tests" at https://github.com/aws/sagemaker-python-sdk#running-tests.
+
+SageMaker integration tests use the following pytest arguments:
+
+- ``docker-base-name``: the Docker image's `ECR repository namespace <https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html>`__.
+- ``framework-version``: the MXNet version. Defaults to the latest supported version.
+- ``py-version``: the Python version. Defaults to '3'.
+- ``processor``: CPU or GPU. Defaults to 'cpu'.
+- ``tag``: the Docker image's tag. Defaults to <mxnet_version>-<processor>-py<py-version>
+- ``aws-id``: your AWS account ID.
+- ``instance-type``: the specified `Amazon SageMaker Instance Type <https://aws.amazon.com/sagemaker/pricing/instance-types/>`__ that the tests will run on.
+  Defaults to 'ml.c4.xlarge' for CPU and 'ml.p2.xlarge' for GPU.
+
+To run SageMaker integration tests:
+
+::
+
+    tox test/integration/sagmaker -- --aws-id <your_aws_id> \
+                                     --docker-base-name <your_docker_image> \
+                                     --instance-type <amazon_sagemaker_instance_type> \
+                                     --tag <your_docker_image_tag> \
+
+::
+
+    # Example
+    tox test/integration/sagemaker -- --aws-id 12345678910 \
+                                      --docker-base-name preprod-mxnet-serving \
+                                      --instance-type ml.m4.xlarge \
+                                      --tag 1.4.0-cpu-py3
+
+If you want to run a SageMaker end to end test for your Elastic Inference container, you will need to provide an ``accelerator_type`` as an additional pytest argument.
+
+The ``accelerator-type`` is your specified `Amazon Elastic Inference Accelerator <https://aws.amazon.com/sagemaker/pricing/instance-types/>`__ type that will be attached to your instance type.
+
+::
+
+    # Example for running Elastic Inference SageMaker end to end test
+    tox test/integration/sagemaker/test_elastic_inference.py -- --aws-id 12345678910 \
+                                                                --docker-base-name preprod-mxnet-serving \
+                                                                --instance-type ml.m4.xlarge \
+                                                                --accelerator-type ml.eia1.medium \
+                                                                --tag 1.0
 
 Contributing
 ------------
