@@ -1,6 +1,23 @@
-FROM awsdeeplearningteam/mxnet-model-server:base-gpu-py2.7
+FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu16.04
 
 LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+    fakeroot \
+    ca-certificates \
+    dpkg-dev \
+    g++ \
+    python-dev \
+    openjdk-8-jdk-headless \
+    curl \
+    vim \
+    && rm -rf /var/lib/apt/lists/* \
+    && cd /tmp \
+    && curl -O https://bootstrap.pypa.io/get-pip.py \
+    && python get-pip.py
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
@@ -12,7 +29,8 @@ WORKDIR /
 
 COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
-RUN pip install --no-cache mxnet-cu92mkl==1.4.1 \
+RUN pip install --no-cache mxnet-cu100mkl==1.4.1 \
+                           mxnet-model-server==1.0.4 \
                            keras-mxnet==2.2.4.1 \
                            numpy==1.14.5 \
                            onnx==1.4.1 \
@@ -31,4 +49,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
+RUN mkdir -p /home/model-server/tmp
+
+COPY docker/1.4.1/py2/dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+COPY docker/1.4.1/py2/config.properties /home/model-server
+
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
+
+EXPOSE 8080 8081
+
+WORKDIR /home/model-server
+ENV TEMP=/home/model-server/tmp
+CMD ["serve"]
 ENTRYPOINT []
