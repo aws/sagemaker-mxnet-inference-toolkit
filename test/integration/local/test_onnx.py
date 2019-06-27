@@ -39,7 +39,7 @@ def test_onnx_import(docker_image, sagemaker_local_session, local_instance_type)
             predictor = model.deploy(1, local_instance_type)
             output = predictor.predict(input)
         finally:
-            sagemaker_local_session.delete_endpoint(model.endpoint_name)
+            predictor.delete_endpoint()
 
     # Check that there is a probability for each possible class in the prediction
     assert len(output[0]) == 10

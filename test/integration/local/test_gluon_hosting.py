@@ -42,4 +42,4 @@ def test_gluon_hosting(docker_image, sagemaker_local_session, local_instance_typ
             output = predictor.predict(input)
             assert [4.0] == output
         finally:
-            sagemaker_local_session.delete_endpoint(model.endpoint_name)
+            predictor.delete_endpoint()
