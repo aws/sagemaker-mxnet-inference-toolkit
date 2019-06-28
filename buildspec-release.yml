@@ -66,6 +66,7 @@ phases:
       - IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py --py-version 2 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION
 
       # write deployment details to file
+      # TODO: remove hardcoded AWS account number once it's configurable per region
       - |
         echo '[{
           "repository": "'$ECR_REPO'",
