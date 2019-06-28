@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 (2019-06-28)
+
+### Bug fixes and other changes
+
+ * remove nonexistent EI GPU images from buildspec-release.yml
+
 ## v1.0.1 (2019-06-27)
 
 ### Bug fixes and other changes
