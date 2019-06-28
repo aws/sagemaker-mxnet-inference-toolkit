@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.3 (2019-06-28)
+
+### Bug fixes and other changes
+
+ * fix account number in deployment test command
+
 ## v1.0.2 (2019-06-28)
 
 ### Bug fixes and other changes
