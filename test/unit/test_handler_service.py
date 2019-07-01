@@ -90,4 +90,4 @@ def test_user_module_unsupported(import_module, env):
         HandlerService._user_module_transformer()
 
     import_module.assert_called_once_with(MODULE_NAME)
-    assert 'Unsupported model type' in str(e)
+    e.match('Unsupported model type')

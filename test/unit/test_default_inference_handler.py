@@ -132,7 +132,7 @@ def test_mxnet_default_input_fn_with_accelerator(decode, mx_ndarray, mx_eia):
 def test_mxnet_default_input_fn_invalid_content_type():
     with pytest.raises(errors.UnsupportedFormatError) as e:
         DefaultMXNetInferenceHandler().default_input_fn(None, 'bad/content-type')
-    assert 'Content type bad/content-type is not supported by this framework' in str(e)
+    e.match('Content type bad/content-type is not supported by this framework')
 
 
 @patch('sagemaker_inference.encoder.encode', return_value=str())
@@ -151,7 +151,7 @@ def test_mxnet_default_output_fn(encode):
 def test_mxnet_default_output_fn_invalid_content_type():
     with pytest.raises(errors.UnsupportedFormatError) as e:
         DefaultMXNetInferenceHandler().default_output_fn(None, 'bad/content-type')
-    assert 'Content type bad/content-type is not supported by this framework' in str(e)
+    e.match('Content type bad/content-type is not supported by this framework')
 
 
 #################################################################################
@@ -231,7 +231,7 @@ def test_module_default_input_fn_with_accelerator(decode, mx_ndarray_iter, mx_nd
 def test_module_default_input_fn_invalid_content_type():
     with pytest.raises(errors.UnsupportedFormatError) as e:
         DefaultModuleInferenceHandler().default_input_fn(None, 'bad/content-type')
-    assert 'Content type bad/content-type is not supported by this framework' in str(e)
+    e.match('Content type bad/content-type is not supported by this framework')
 
 
 def test_module_default_predict_fn():
