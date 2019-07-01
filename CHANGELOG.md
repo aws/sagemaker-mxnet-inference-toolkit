@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0.4 (2019-07-01)
+
+### Bug fixes and other changes
+
+ * remove unnecessary pytest marks
+ * add retries to remote integ tests in buildspec-release.yml
+ * update tests to except pytest's ExceptionInfo object
+ * parametrize Python version and processor type in integ tests
+
 ## v1.0.3 (2019-06-28)
 
 ### Bug fixes and other changes
