@@ -54,7 +54,7 @@ phases:
       - remote-test --test-cmd "$cmd --py-version 2,3" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE
 
       # run sagemaker integration tests
-      - IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION
+      - IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5
 
       # run ei tests
       - IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION
