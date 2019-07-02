@@ -30,7 +30,7 @@ WORKDIR /
 COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache mxnet-cu100mkl==1.4.1 \
-                           mxnet-model-server==1.0.4 \
+                           mxnet-model-server==1.0.5 \
                            keras-mxnet==2.2.4.1 \
                            numpy==1.14.5 \
                            onnx==1.4.1 \
