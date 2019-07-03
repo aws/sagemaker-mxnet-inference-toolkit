@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.6 (2019-07-03)
+
+### Bug fixes and other changes
+
+ * add retries to all integ tests commands in buildspec-release.yml
+
 ## v1.0.5 (2019-07-03)
 
 ### Bug fixes and other changes
