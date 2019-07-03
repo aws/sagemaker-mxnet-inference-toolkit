@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.5 (2019-07-03)
+
+### Bug fixes and other changes
+
+ * fix account number for EI deployment test in buildspec-release.yml
+
 ## v1.0.4 (2019-07-01)
 
 ### Bug fixes and other changes
