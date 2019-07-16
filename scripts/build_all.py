@@ -30,9 +30,43 @@ def _parse_args():
     return parser.parse_args()
 
 
+def _build_image(build_dir, arch, prev_image_uri, py_version):
+    if py_version == '2.7':
+        dockerfile = os.path.join(build_dir, 'Dockerfile.{}'.format(arch))
+
+        build_cmd = [
+            'docker', 'build',
+            '-f', dockerfile,
+            '--cache-from', prev_image_uri,
+            '-t', dest,
+            '.',
+        ]
+
+        print('Building docker image: {}'.format(' '.join(build_cmd)))
+        subprocess.check_call(build_cmd)
+    else:
+        dockerfile = 'Dockerfile.{}'.format(arch)
+
+        build_cmd = [
+            'docker', 'build',
+            '-f', dockerfile,
+            '--cache-from', prev_image_uri,
+            '-t', dest,
+            '.',
+        ]
+
+        prev_dir = os.getcwd()
+        os.chdir(build_dir)
+
+        print('Building docker image: {}'.format(' '.join(build_cmd)))
+        subprocess.check_call(build_cmd)
+
+        os.chdir(prev_dir)
+
+
 args = _parse_args()
 
-build_dir = os.path.join('docker', args.version, 'final')
+root_build_dir = os.path.join('docker', args.version)
 
 # Run docker-login so we can pull the cached image
 get_login_cmd = 'aws ecr get-login --no-include-email --region {} --registry-id {}'.format(args.region, args.account)
@@ -48,15 +82,6 @@ for arch in ['cpu', 'gpu', 'eia']:
         dest = '{}:{}'.format(repo, tag)
 
         prev_image_uri = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, dest)
-        dockerfile = os.path.join(build_dir, 'Dockerfile.{}'.format(arch))
 
-        build_cmd = [
-            'docker', 'build',
-            '-f', dockerfile,
-            '--cache-from', prev_image_uri,
-            '--build-arg', 'py_version={}'.format(py_version),
-            '-t', dest,
-            '.',
-        ]
-        print('Building docker image: {}'.format(' '.join(build_cmd)))
-        subprocess.check_call(build_cmd)
+        build_dir = os.path.join(root_build_dir, 'py{}'.format(py_version[0]))
+        _build_image(build_dir, arch, prev_image_uri, py_version)
