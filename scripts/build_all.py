@@ -31,7 +31,7 @@ def _parse_args():
 
 
 def _build_image(build_dir, arch, prev_image_uri, py_version):
-    if py_version == '2.7':
+    if py_version == '2.7' or arch == 'eia':
         dockerfile = os.path.join(build_dir, 'Dockerfile.{}'.format(arch))
 
         build_cmd = [
