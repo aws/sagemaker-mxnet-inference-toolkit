@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.1.0 (2019-07-18)
+
+### Features
+
+ * add MXNet 1.4.1 Dockerfiles
+
+### Bug fixes and other changes
+
+ * use Python 2 build logic for EI images during release
+ * add missing files needed for building MXNet 1.4.1 Python 2 images
+ * configure flake8 to ignore the docker/ directory
+
 ## v1.0.6 (2019-07-03)
 
 ### Bug fixes and other changes
