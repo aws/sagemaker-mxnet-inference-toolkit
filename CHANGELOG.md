@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.1 (2019-08-15)
+
+### Bug fixes and other changes
+
+ * fix flake8
+ * update no-p2 regions and no-p3 regions.
+ * Skipping EIA test if accelerator type is None.
+
 ## v1.1.0 (2019-07-18)
 
 ### Features
