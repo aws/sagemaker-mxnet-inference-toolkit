@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.2 (2019-08-17)
+
+### Bug fixes and other changes
+
+ * split cpu and gpu tests for deployments in buildspec-release.yml
+ * add missing placeholder in test for non-eia test command.
+
 ## v1.1.1 (2019-08-15)
 
 ### Bug fixes and other changes
