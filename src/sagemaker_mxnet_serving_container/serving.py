@@ -12,11 +12,10 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
+from contextlib import contextmanager
 import os
 import signal
-import time
 
-from contextlib import contextmanager
 from sagemaker_inference import model_server
 
 from sagemaker_mxnet_serving_container import handler_service
@@ -39,6 +38,7 @@ def _update_mxnet_env_vars():
     for k, v in DEFAULT_ENV_VARS.items():
         if k not in os.environ:
             os.environ[k] = v
+
 
 @contextmanager
 def _timeout(seconds=30):
@@ -65,5 +65,3 @@ def main():
                 break
             except OSError:
                 pass
-
-
