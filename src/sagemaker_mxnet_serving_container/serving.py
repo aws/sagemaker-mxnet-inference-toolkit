@@ -13,8 +13,10 @@
 from __future__ import absolute_import
 
 import os
+import signal
 import time
 
+from contextlib import contextmanager
 from sagemaker_inference import model_server
 
 from sagemaker_mxnet_serving_container import handler_service
@@ -29,10 +31,26 @@ DEFAULT_ENV_VARS = {
 }
 
 
+class TimeoutError(Exception):
+    pass
+
+
 def _update_mxnet_env_vars():
     for k, v in DEFAULT_ENV_VARS.items():
         if k not in os.environ:
             os.environ[k] = v
+
+@contextmanager
+def _timeout(seconds=30):
+    def _raise_timeout_error(signum, frame):
+        raise TimeoutError('timeout out after {} second'.format(seconds))
+
+    try:
+        signal.signal(signal.SIGALRM, _raise_timeout_error)
+        signal.alarm(seconds)
+        yield
+    finally:
+        signal.alarm(0)
 
 
 def main():
@@ -40,6 +58,12 @@ def main():
 
     # there's a race condition that causes the model server command to
     # sometimes fail with 'bad address'. more investigation needed.
-    time.sleep(5)
+    with _timeout(30):
+        while True:
+            try:
+                model_server.start_model_server(handler_service=HANDLER_SERVICE)
+                break
+            except OSError:
+                pass
 
-    model_server.start_model_server(handler_service=HANDLER_SERVICE)
+
