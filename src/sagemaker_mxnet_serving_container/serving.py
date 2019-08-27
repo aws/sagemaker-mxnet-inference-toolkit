@@ -43,6 +43,9 @@ def _retry_if_error(exception):
 @retry(stop_max_delay=1000 * 30,
        retry_on_exception=_retry_if_error)
 def _start_model_server():
+    # there's a race condition that causes the model server command to
+    # sometimes fail with 'bad address'. more investigation needed
+    # retry starting mms until it's ready
     model_server.start_model_server(handler_service=HANDLER_SERVICE)
 
 
