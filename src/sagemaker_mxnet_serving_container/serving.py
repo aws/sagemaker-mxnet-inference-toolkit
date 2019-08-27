@@ -13,8 +13,9 @@
 from __future__ import absolute_import
 
 import os
-import time
+from subprocess import CalledProcessError
 
+from retrying import retry
 from sagemaker_inference import model_server
 
 from sagemaker_mxnet_serving_container import handler_service
@@ -35,11 +36,19 @@ def _update_mxnet_env_vars():
             os.environ[k] = v
 
 
+def _retry_if_error(exception):
+    return isinstance(exception, CalledProcessError)
+
+
+@retry(stop_max_delay=1000 * 30,
+       retry_on_exception=_retry_if_error)
+def _start_model_server():
+    # there's a race condition that causes the model server command to
+    # sometimes fail with 'bad address'. more investigation needed
+    # retry starting mms until it's ready
+    model_server.start_model_server(handler_service=HANDLER_SERVICE)
+
+
 def main():
     _update_mxnet_env_vars()
-
-    # there's a race condition that causes the model server command to
-    # sometimes fail with 'bad address'. more investigation needed.
-    time.sleep(5)
-
-    model_server.start_model_server(handler_service=HANDLER_SERVICE)
+    _start_model_server()
