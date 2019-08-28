@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.3 (2019-08-28)
+
+### Bug fixes and other changes
+
+ * retry mms until it's ready
+
 ## v1.1.2 (2019-08-17)
 
 ### Bug fixes and other changes
