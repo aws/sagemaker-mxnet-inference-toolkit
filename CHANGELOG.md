@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.3.post0 (2019-08-29)
+
+### Documentation changes
+
+ * Update the build instructions to match reality.
+
 ## v1.1.3 (2019-08-28)
 
 ### Bug fixes and other changes
