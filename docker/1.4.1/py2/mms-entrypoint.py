@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"). You
@@ -12,15 +10,16 @@
 # distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
 # ANY KIND, either express or implied. See the License for the specific
 # language governing permissions and limitations under the License.
+import shlex
+import subprocess
+import sys
 
-set -e
+from sagemaker_mxnet_serving_container import serving
 
-if [[ "$1" = "serve" ]]; then
-    shift 1
-    mxnet-model-server --start --mms-config config.properties
-else
-    eval "$@"
-fi
+if sys.argv[1] == 'serve':
+    serving.main()
+else:
+    subprocess.check_call(shlex.split(' '.join(sys.argv[1:])))
 
 # prevent docker exit
-tail -f /dev/null
+subprocess.call(['tail', '-f', '/dev/null'])
