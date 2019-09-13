@@ -31,8 +31,6 @@ ENV LANG=C.UTF-8 \
     PYTHONIOENCODING=UTF-8 \
     LC_ALL=C.UTF-8
 
-RUN pip --no-cache-dir install --upgrade pip setuptools
-
 WORKDIR /
 
 RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz -O /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
@@ -42,8 +40,11 @@ RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/
 
 COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
-RUN pip install --no-cache-dir \
-    https://s3.amazonaws.com/amazonei-apachemxnet/amazonei_mxnet-1.4.1-py2.py3-none-manylinux1_x86_64.whl  \
+RUN pip install --no-cache-dir --upgrade \
+    pip \
+    setuptools \
+ && pip install --no-cache-dir \
+    https://s3.amazonaws.com/amazonei-apachemxnet/amazonei_mxnet-1.4.1-py2.py3-none-manylinux1_x86_64.whl \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
     onnx==1.4.1 \
