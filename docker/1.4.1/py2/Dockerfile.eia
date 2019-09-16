@@ -42,8 +42,9 @@ COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
-    setuptools \
- && pip install --no-cache-dir \
+    setuptools
+
+RUN pip install --no-cache-dir \
     https://s3.amazonaws.com/amazonei-apachemxnet/amazonei_mxnet-1.4.1-py2.py3-none-manylinux1_x86_64.whl \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
