@@ -6,7 +6,6 @@ env:
     AWS_DEFAULT_REGION: 'us-west-2'
     ECR_REPO: 'sagemaker_test'
     GITHUB_REPO: 'sagemaker-mxnet-serving-container'
-    EI_ACCELERATOR_TYPE: 'ml.eia1.medium'
     GPU_INSTANCE_TYPE: 'p2.xlarge'
     SETUP_FILE: 'setup_cmds.sh'
     SETUP_CMDS: '#!/bin/bash\npip install --upgrade pip\npip install -U -e .\npip install -U -e .[test]'
