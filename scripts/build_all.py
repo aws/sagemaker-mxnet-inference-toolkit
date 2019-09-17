@@ -26,6 +26,7 @@ def _parse_args():
     parser.add_argument('--version')
     parser.add_argument('--repo')
     parser.add_argument('--region', default=DEFAULT_REGION)
+    parser.add_argument('--build-id', default='')
 
     return parser.parse_args()
 
@@ -77,7 +78,7 @@ subprocess.check_call(login_cmd.split())
 for arch in ['cpu', 'gpu', 'eia']:
     for py_version in ['2.7', '3.6']:
         tag_arch = 'cpu' if arch == 'eia' else arch
-        tag = '{}-{}-py{}'.format(args.version, tag_arch, py_version[0])
+        tag = '{}-{}-py{}-{}'.format(args.version, tag_arch, py_version[0], args.build_id)
         repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
         dest = '{}:{}'.format(repo, tag)
 
