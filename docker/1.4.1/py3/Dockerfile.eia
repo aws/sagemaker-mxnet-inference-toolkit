@@ -38,14 +38,15 @@ RUN wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSIO
  && make install \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-    libreadline-gplv2-dev \
-    libncursesw5-dev \
-    libssl-dev \
-    libsqlite3-dev \
-    tk-dev \
-    libgdbm-dev \
-    libc6-dev \
     libbz2-dev \
+    libc6-dev \
+    libgdbm-dev \
+    libncursesw5-dev \
+    libreadline-gplv2-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    tk-dev \
+ && rm -rf /var/lib/apt/lists/* \
  && make \
  && make install \
  && rm -rf ../Python-$PYTHON_VERSION* \
@@ -59,9 +60,7 @@ RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/
  && rm -rf /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
  && chmod a+x /opt/ei_health_check/bin/health_check
 
-COPY dist /dist
-
-RUN mv /dist/sagemaker_mxnet_serving_container*.tar.gz /dist/sagemaker_mxnet_serving_container.tar.gz
+COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
@@ -72,8 +71,8 @@ RUN pip install --no-cache-dir \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
     onnx==1.4.1 \
-    /dist/sagemaker_mxnet_serving_container.tar.gz \
- && rm -rf /dist
+    /sagemaker_mxnet_serving_container.tar.gz \
+ && rm /sagemaker_mxnet_serving_container.tar.gz
 
 # This is here to make our installed version of OpenCV work.
 # https://stackoverflow.com/questions/29274638/opencv-libdc1394-error-failed-to-initialize-libdc1394
