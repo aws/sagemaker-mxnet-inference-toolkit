@@ -59,7 +59,9 @@ RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/
  && rm -rf /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
  && chmod a+x /opt/ei_health_check/bin/health_check
 
-COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
+COPY dist /dist
+
+RUN mv /dist/sagemaker_mxnet_serving_container*.tar.gz /dist/sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
@@ -70,8 +72,8 @@ RUN pip install --no-cache-dir \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
     onnx==1.4.1 \
-    /sagemaker_mxnet_serving_container.tar.gz \
- && rm /sagemaker_mxnet_serving_container.tar.gz
+    /dist/sagemaker_mxnet_serving_container.tar.gz \
+ && rm -rf /dist
 
 # This is here to make our installed version of OpenCV work.
 # https://stackoverflow.com/questions/29274638/opencv-libdc1394-error-failed-to-initialize-libdc1394
