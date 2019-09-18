@@ -31,10 +31,10 @@ phases:
       - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
 
       - BUILD_ID="$(echo $CODEBUILD_BUILD_ID | sed -e 's/:/-/g')"
-      - CPU_PY2_TAG = $FRAMEWORK_FULL_VERSION-cpu-py2-$BUILD_ID
-      - CPU_PY3_TAG = $FRAMEWORK_FULL_VERSION-cpu-py2-$BUILD_ID
-      - GPU_PY2_TAG = $FRAMEWORK_FULL_VERSION-gpu-py2-$BUILD_ID
-      - GPU_PY3_TAG = $FRAMEWORK_FULL_VERSION-gpu-py3-$BUILD_ID
+      - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2-$BUILD_ID
+      - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3-$BUILD_ID
+      - GPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-gpu-py2-$BUILD_ID
+      - GPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-gpu-py3-$BUILD_ID
 
       # build images
       - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO --build-id $BUILD_ID
