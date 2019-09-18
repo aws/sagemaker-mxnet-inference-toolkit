@@ -42,10 +42,10 @@ def predictor(docker_image, sagemaker_local_session, local_instance_type):
             predictor.delete_endpoint()
 
 
-def test_default_model_fn(predictor):
-    input = [[1, 2]]
-    output = predictor.predict(input)
-    assert [[4.9999918937683105]] == output
+# def test_default_model_fn(predictor):
+#     input = [[1, 2]]
+#     output = predictor.predict(input)
+#     assert [[4.9999918937683105]] == output
 
 
 def test_default_model_fn_content_type(predictor):
