@@ -8,8 +8,8 @@ ARG MMS_VERSION=1.0.5
 ARG PYTHON=python
 ARG HEALTH_CHECK_VERSION=1.3.3
 
-RUN apt-get update \
- && apt-get -y install --no-install-recommends \
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
     build-essential \
     ca-certificates \
     curl \
@@ -38,7 +38,7 @@ RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/
  && rm -rf /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
  && chmod a+x /opt/ei_health_check/bin/health_check
 
-COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
+COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
