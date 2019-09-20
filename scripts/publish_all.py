@@ -33,10 +33,10 @@ def _parse_args():
 args = _parse_args()
 
 for arch in ['cpu', 'gpu', 'eia']:
-    for py_version in ['2', '3']:
+    for py_version in ['2']:
         repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
         tag_arch = 'cpu' if arch == 'eia' else arch
-        source = '{}:{}-{}-py{}-{}'.format(repo, args.version, tag_arch, py_version)
+        source = '{}:{}-{}-py{}'.format(repo, args.version, tag_arch, py_version)
         if args.build_id:
             source += "-{}".format(args.build_id)
 

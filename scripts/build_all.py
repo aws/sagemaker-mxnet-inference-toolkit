@@ -31,38 +31,24 @@ def _parse_args():
     return parser.parse_args()
 
 
-def _build_image(build_dir, arch, prev_image_uri, py_version):
-    if py_version == '2.7' or arch == 'eia':
-        dockerfile = os.path.join(build_dir, 'Dockerfile.{}'.format(arch))
+def _build_image(build_dir, arch, prev_image_uri):
+    dockerfile = 'Dockerfile.{}'.format(arch)
 
-        build_cmd = [
-            'docker', 'build',
-            '-f', dockerfile,
-            '--cache-from', prev_image_uri,
-            '-t', dest,
-            '.',
-        ]
+    build_cmd = [
+        'docker', 'build',
+        '-f', dockerfile,
+        '--cache-from', prev_image_uri,
+        '-t', dest,
+        '.',
+    ]
 
-        print('Building docker image: {}'.format(' '.join(build_cmd)))
-        subprocess.check_call(build_cmd)
-    else:
-        dockerfile = 'Dockerfile.{}'.format(arch)
+    prev_dir = os.getcwd()
+    os.chdir(build_dir)
 
-        build_cmd = [
-            'docker', 'build',
-            '-f', dockerfile,
-            '--cache-from', prev_image_uri,
-            '-t', dest,
-            '.',
-        ]
+    print('Building docker image: {}'.format(' '.join(build_cmd)))
+    subprocess.check_call(build_cmd)
 
-        prev_dir = os.getcwd()
-        os.chdir(build_dir)
-
-        print('Building docker image: {}'.format(' '.join(build_cmd)))
-        subprocess.check_call(build_cmd)
-
-        os.chdir(prev_dir)
+    os.chdir(prev_dir)
 
 
 args = _parse_args()

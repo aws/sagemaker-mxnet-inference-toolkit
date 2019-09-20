@@ -10,7 +10,7 @@ RUN apt-get update && \
 
 WORKDIR /
 
-COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
+COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache mxnet-mkl==1.4.1 \
                            keras-mxnet==2.2.4.1 \
