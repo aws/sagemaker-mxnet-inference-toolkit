@@ -51,8 +51,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 RUN mkdir -p /home/model-server/tmp
 
-COPY docker/1.4.1/py2/dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
-COPY docker/1.4.1/py2/config.properties /home/model-server
+COPY dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+COPY config.properties /home/model-server
 
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
 
