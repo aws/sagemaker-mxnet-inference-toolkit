@@ -25,7 +25,6 @@ def _parse_args():
     parser.add_argument('--version')
     parser.add_argument('--repo')
     parser.add_argument('--region', default=DEFAULT_REGION)
-    parser.add_argument('--build-id')
 
     return parser.parse_args()
 
@@ -37,8 +36,6 @@ for arch in ['cpu', 'gpu', 'eia']:
         repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
         tag_arch = 'cpu' if arch == 'eia' else arch
         source = '{}:{}-{}-py{}'.format(repo, args.version, tag_arch, py_version)
-        if args.build_id:
-            source += "-{}".format(args.build_id)
 
         dest = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, source)
 

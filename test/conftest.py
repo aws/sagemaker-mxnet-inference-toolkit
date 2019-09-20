@@ -43,7 +43,6 @@ def pytest_addoption(parser):
     parser.addoption('--accelerator-type', default=None)
     # If not specified, will default to {framework-version}-{processor}-py{py-version}
     parser.addoption('--tag', default=None)
-    parser.addoption('--build-id', default=None)
 
 
 def pytest_generate_tests(metafunc):
@@ -80,8 +79,6 @@ def aws_id(request):
 def tag(request, framework_version, processor, py_version):
     provided_tag = request.config.getoption('--tag')
     default_tag = '{}-{}-{}'.format(framework_version, processor, py_version)
-    if request.config.getoption('--build-id'):
-        default_tag += '-{}'.format(request.config.getoption('--build-id'))
     return provided_tag if provided_tag is not None else default_tag
 
 

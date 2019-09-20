@@ -32,25 +32,24 @@ phases:
       - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
       - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
 
-      - BUILD_ID="$(echo $CODEBUILD_BUILD_ID | sed -e 's/:/-/g')"
-      - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2-$BUILD_ID
-      - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3-$BUILD_ID
-      - GPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-gpu-py2-$BUILD_ID
-      - GPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-gpu-py3-$BUILD_ID
+      - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2
+      - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3
+      - GPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-gpu-py2
+      - GPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-gpu-py3
 
       # build images
-      - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO --build-id $BUILD_ID
+      - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO
 
       # run cpu local integration tests
       - |
         if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --build-id $BUILD_ID
+          IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO
         else
           echo "skipping cpu integration tests"
         fi
 
       # push docker images to ECR
-      - python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO --build-id $BUILD_ID
+      - python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO
 
       # launch remote gpu instance
       - create-key-pair
@@ -61,7 +60,7 @@ phases:
         if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
           printf "$SETUP_CMDS" > $SETUP_FILE
           ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
-          cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image" --build-id $BUILD_ID
+          cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
           remote-test --test-cmd "$cmd" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE
         else
           echo "skipping local gpu integration tests"
@@ -70,7 +69,7 @@ phases:
       # run sagemaker integration tests
       - |
         if has-matchiing-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --build-id $BUILD_ID --reruns 3 --reruns-delay 5
+          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5
         else
           echo "skipping sagemaker integration tests"
         fi
@@ -78,7 +77,7 @@ phases:
       # run eia tests
       - |
         if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"l then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --build-id $BUILD_ID --reruns 3
+          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3
         else
           echo "skipping sagemaker eia tests"
         fi
