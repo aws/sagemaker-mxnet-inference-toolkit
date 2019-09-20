@@ -27,7 +27,7 @@ RUN apt-get update && \
 
 WORKDIR /
 
-COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
+COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache mxnet-cu100mkl==1.4.1 \
                            mxnet-model-server==1.0.5 \
