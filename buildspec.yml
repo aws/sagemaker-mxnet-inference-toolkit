@@ -93,6 +93,8 @@ phases:
       - aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY3_TAG
       - aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$GPU_PY2_TAG
       - aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$GPU_PY3_TAG
+      - aws ecr batch-delete-image --repository-name $ECR_REPO-eia --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY2_TAG
+      - aws ecr batch-delete-image --repository-name $ECR_REPO-eia --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY3_TAG
 
 artifacts:
   files:
