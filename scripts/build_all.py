@@ -26,43 +26,28 @@ def _parse_args():
     parser.add_argument('--version')
     parser.add_argument('--repo')
     parser.add_argument('--region', default=DEFAULT_REGION)
-    parser.add_argument('--build-id', default='')
 
     return parser.parse_args()
 
 
-def _build_image(build_dir, arch, prev_image_uri, py_version):
-    if py_version == '2.7' or arch == 'eia':
-        dockerfile = os.path.join(build_dir, 'Dockerfile.{}'.format(arch))
+def _build_image(build_dir, arch, prev_image_uri):
+    dockerfile = 'Dockerfile.{}'.format(arch)
 
-        build_cmd = [
-            'docker', 'build',
-            '-f', dockerfile,
-            '--cache-from', prev_image_uri,
-            '-t', dest,
-            '.',
-        ]
+    build_cmd = [
+        'docker', 'build',
+        '-f', dockerfile,
+        '--cache-from', prev_image_uri,
+        '-t', dest,
+        '.',
+    ]
 
-        print('Building docker image: {}'.format(' '.join(build_cmd)))
-        subprocess.check_call(build_cmd)
-    else:
-        dockerfile = 'Dockerfile.{}'.format(arch)
+    prev_dir = os.getcwd()
+    os.chdir(build_dir)
 
-        build_cmd = [
-            'docker', 'build',
-            '-f', dockerfile,
-            '--cache-from', prev_image_uri,
-            '-t', dest,
-            '.',
-        ]
+    print('Building docker image: {}'.format(' '.join(build_cmd)))
+    subprocess.check_call(build_cmd)
 
-        prev_dir = os.getcwd()
-        os.chdir(build_dir)
-
-        print('Building docker image: {}'.format(' '.join(build_cmd)))
-        subprocess.check_call(build_cmd)
-
-        os.chdir(prev_dir)
+    os.chdir(prev_dir)
 
 
 args = _parse_args()
@@ -79,8 +64,6 @@ for arch in ['cpu', 'gpu', 'eia']:
     for py_version in ['2.7', '3.6']:
         tag_arch = 'cpu' if arch == 'eia' else arch
         tag = '{}-{}-py{}'.format(args.version, tag_arch, py_version[0])
-        if args.build_id:
-            tag += "-{}".format(args.build_id)
 
         repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
         dest = '{}:{}'.format(repo, tag)
@@ -88,4 +71,4 @@ for arch in ['cpu', 'gpu', 'eia']:
         prev_image_uri = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, dest)
 
         build_dir = os.path.join(root_build_dir, 'py{}'.format(py_version[0]))
-        _build_image(build_dir, arch, prev_image_uri, py_version)
+        _build_image(build_dir, arch, prev_image_uri)

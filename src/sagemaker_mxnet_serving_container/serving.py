@@ -37,10 +37,10 @@ def _update_mxnet_env_vars():
 
 
 def _retry_if_error(exception):
-    return isinstance(exception, CalledProcessError)
+    return isinstance(exception, CalledProcessError or OSError)
 
 
-@retry(stop_max_delay=1000 * 30,
+@retry(stop_max_delay=1000 * 50,
        retry_on_exception=_retry_if_error)
 def _start_model_server():
     # there's a race condition that causes the model server command to

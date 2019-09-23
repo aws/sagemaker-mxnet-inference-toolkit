@@ -27,7 +27,7 @@ RUN apt-get update && \
 
 WORKDIR /
 
-COPY dist/sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
+COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container.tar.gz
 
 RUN pip install --no-cache mxnet-cu100mkl==1.4.1 \
                            mxnet-model-server==1.0.5 \
@@ -51,8 +51,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 RUN mkdir -p /home/model-server/tmp
 
-COPY docker/1.4.1/py2/dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
-COPY docker/1.4.1/py2/config.properties /home/model-server
+COPY dockerd-entrypoint.sh /usr/local/bin/dockerd-entrypoint.sh
+COPY config.properties /home/model-server
 
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
 
