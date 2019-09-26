@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.1.4 (2019-09-26)
+
+### Bug fixes and other changes
+
+ * build context in release build
+ * make consistent build context for py versions
+ * Revert "Update build context on 1.4.1 EI dockerfiles (#64)"
+ * a typo in build_all script
+ * Update build context on 1.4.1 EI dockerfiles
+ * correct typo in buildspec
+ * enable PR build
+ * separate pip upgrade from other installs
+ * New py2 dlc dockerfiles
+ * New py3 dlc dockerfiles
+
 ## v1.1.3.post0 (2019-08-29)
 
 ### Documentation changes
