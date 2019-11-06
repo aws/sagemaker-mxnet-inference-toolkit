@@ -1,6 +1,7 @@
 FROM awsdeeplearningteam/mxnet-model-server:base-cpu-py2.7
 
 LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
+LABEL com.amazonaws.sagemaker.capabilities.multi-models=true
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
