@@ -83,6 +83,15 @@ def test_query_bucket(requests_mock, fixture_valid_region, fixture_valid_instanc
     assert 'Access Denied' == actual_response.text
 
 
+def test_main(requests_mock, fixture_valid_region, fixture_valid_instance_id):
+    fixture_valid_instance_id.return_value = 'i-123t32e11s32t1231'
+    fixture_valid_region.return_value = 'us-east-1'
+    requests_mock.get('https://aws-deep-learning-containers-us-east-1.s3.us-east-1.amazonaws.com/'
+                      'dlc-containers.txt?x-instance-id=i-123t32e11s32t1231', text='Access Denied')
+    actual_response = deep_learning_container_to_test.main()
+    assert 'Access Denied' == actual_response.text
+
+
 def test_query_bucket_region_none(fixture_invalid_region, fixture_valid_instance_id):
     fixture_valid_instance_id.return_value = 'i-123t32e11s32t1231'
     fixture_invalid_region.return_value = None
