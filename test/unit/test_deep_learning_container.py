@@ -14,8 +14,8 @@ from __future__ import absolute_import
 
 import unittest
 
-import requests
 import pytest
+import requests
 import requests_mock  # noqa: F401;
 
 from sagemaker_mxnet_serving_container import deep_learning_container as deep_learning_container_to_test
