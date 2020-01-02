@@ -31,6 +31,8 @@ phases:
       - mv dist/sagemaker_mxnet_serving_container-*.tar.gz dist/sagemaker_mxnet_serving_container.tar.gz
       - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
       - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
+      - cp src/sagemaker_mxnet_serving_container/deep_learning_container.py docker/$FRAMEWORK_FULL_VERSION/py3/deep_learning_container.py
+      - cp src/sagemaker_mxnet_serving_container/deep_learning_container.py docker/$FRAMEWORK_FULL_VERSION/py2/deep_learning_container.py
 
       - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2
       - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3
