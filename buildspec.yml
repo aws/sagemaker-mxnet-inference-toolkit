@@ -3,6 +3,7 @@ version: 0.2
 env:
   variables:
     FRAMEWORK_FULL_VERSION: '1.6.0'
+    EI_FRAMEWORK_VERSION: '1.4.1'
     AWS_DEFAULT_REGION: 'us-west-2'
     ECR_REPO: 'sagemaker-test'
     GITHUB_REPO: 'sagemaker-mxnet-serving-container'
@@ -40,7 +41,7 @@ phases:
       - GPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-gpu-py3
 
       # build images
-      - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO
+      - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO
 
       # run cpu local integration tests
       - |
