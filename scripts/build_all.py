@@ -31,7 +31,7 @@ def _parse_args():
     return parser.parse_args()
 
 
-def _build_image(build_dir, arch, prev_image_uri):
+def _build_image(build_dir, arch, prev_image_uri, dest):
     dockerfile = 'Dockerfile.{}'.format(arch)
 
     build_cmd = [
@@ -57,7 +57,8 @@ def main():
     root_build_dir = os.path.join('docker', args.version)
 
     # Run docker-login so we can pull the cached image
-    get_login_cmd = 'aws ecr get-login --no-include-email --region {} --registry-id {}'.format(args.region, args.account)
+    get_login_cmd = 'aws ecr get-login --no-include-email --region {} ' \
+                    '--registry-id {}'.format(args.region, args.account)
     login_cmd = subprocess.check_output(get_login_cmd.split())
     print('Executing docker login command: '.format(login_cmd))
     subprocess.check_call(login_cmd.split())
@@ -76,7 +77,7 @@ def main():
             prev_image_uri = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, dest)
 
             build_dir = os.path.join(root_build_dir, 'py{}'.format(py_version[0]))
-            _build_image(build_dir, arch, prev_image_uri)
+            _build_image(build_dir, arch, prev_image_uri, dest)
 
 
 if __name__ == '__main__':
