@@ -54,8 +54,6 @@ def _build_image(build_dir, arch, prev_image_uri, dest):
 def main():
     args = _parse_args()
 
-    root_build_dir = os.path.join('docker', args.version)
-
     # Run docker-login so we can pull the cached image
     get_login_cmd = 'aws ecr get-login --no-include-email --region {} ' \
                     '--registry-id {}'.format(args.region, args.account)
@@ -69,6 +67,7 @@ def main():
         for py_version in ['2.7', '3.6']:
             tag_arch = 'cpu' if arch == 'eia' else arch
             framework_version = eia_version if arch == 'eia' else args.version
+            root_build_dir = os.path.join('docker', framework_version)
             tag = '{}-{}-py{}'.format(framework_version, tag_arch, py_version[0])
 
             repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
