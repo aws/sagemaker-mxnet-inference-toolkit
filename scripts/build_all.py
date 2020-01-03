@@ -61,12 +61,10 @@ def main():
     print('Executing docker login command: '.format(login_cmd))
     subprocess.check_call(login_cmd.split())
 
-    eia_version = args.eia_version if args.eia_version else args.version
-
     for arch in ['cpu', 'gpu', 'eia']:
         for py_version in ['2.7', '3.6']:
             tag_arch = 'cpu' if arch == 'eia' else arch
-            framework_version = eia_version if arch == 'eia' else args.version
+            framework_version = args.eia_version if (arch == 'eia' and args.eia_version) else args.version
             root_build_dir = os.path.join('docker', framework_version)
             tag = '{}-{}-py{}'.format(framework_version, tag_arch, py_version[0])
 
