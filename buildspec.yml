@@ -54,7 +54,7 @@ phases:
         fi
 
       # push docker images to ECR
-      - python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --account $ACCOUNT --repo $ECR_REPO
+      - python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO
 
       # launch remote gpu instance
       - create-key-pair
