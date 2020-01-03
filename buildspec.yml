@@ -82,7 +82,7 @@ phases:
       # run eia tests
       - |
         if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION --reruns 3
+          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION
         else
           echo "skipping sagemaker eia tests"
         fi
