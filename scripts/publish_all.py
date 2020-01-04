@@ -23,32 +23,39 @@ def _parse_args():
 
     parser.add_argument('--account')
     parser.add_argument('--version')
+    parser.add_argument('--eia-version', default=None)
     parser.add_argument('--repo')
     parser.add_argument('--region', default=DEFAULT_REGION)
 
     return parser.parse_args()
 
 
-args = _parse_args()
+def main():
+    args = _parse_args()
 
-for arch in ['cpu', 'gpu', 'eia']:
-    for py_version in ['2', '3']:
-        repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
-        tag_arch = 'cpu' if arch == 'eia' else arch
-        source = '{}:{}-{}-py{}'.format(repo, args.version, tag_arch, py_version)
+    for arch in ['cpu', 'gpu', 'eia']:
+        for py_version in ['2', '3']:
+            repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
+            tag_arch = 'cpu' if arch == 'eia' else arch
+            framework_version = args.eia_version if (arch == 'eia' and args.eia_version) else args.version
+            source = '{}:{}-{}-py{}'.format(repo, framework_version, tag_arch, py_version)
 
-        dest = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, source)
+            dest = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, source)
 
-        tag_cmd = 'docker tag {} {}'.format(source, dest)
-        print('Tagging image: {}'.format(tag_cmd))
-        subprocess.check_call(tag_cmd.split())
+            tag_cmd = 'docker tag {} {}'.format(source, dest)
+            print('Tagging image: {}'.format(tag_cmd))
+            subprocess.check_call(tag_cmd.split())
 
-        login_cmd = subprocess.check_output(
-            'aws ecr get-login --no-include-email --registry-id {} --region {}'
-            .format(args.account, args.region).split())
-        print('Executing docker login command: {}'.format(login_cmd))
-        subprocess.check_call(login_cmd.split())
+            login_cmd = subprocess.check_output(
+                'aws ecr get-login --no-include-email --registry-id {} --region {}'
+                .format(args.account, args.region).split())
+            print('Executing docker login command: {}'.format(login_cmd))
+            subprocess.check_call(login_cmd.split())
 
-        push_cmd = 'docker push {}'.format(dest)
-        print('Pushing image: {}'.format(push_cmd))
-        subprocess.check_call(push_cmd.split())
+            push_cmd = 'docker push {}'.format(dest)
+            print('Pushing image: {}'.format(push_cmd))
+            subprocess.check_call(push_cmd.split())
+
+
+if __name__ == '__main__':
+    main()
