@@ -46,7 +46,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    install_requires=['sagemaker-inference==1.1.2', 'retrying==1.3.3'],
+    install_requires=['sagemaker-inference>=1.1.0,<=1.1.2', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
                  'mock', 'sagemaker==1.23.0', 'docker-compose', 'mxnet==1.4.0', 'awslogs', 'requests_mock']
