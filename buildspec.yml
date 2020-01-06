@@ -30,12 +30,9 @@ phases:
       # create pip archive (tar name will be something like sagemaker_mxnet_serving_container-1.0.0.tar.gz, but the Dockerfiles expect sagemaker_mxnet_serving_container.tar.gz)
       - python3 setup.py sdist
       - mv dist/sagemaker_mxnet_serving_container-*.tar.gz dist/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$EI_FRAMEWORK_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$EI_FRAMEWORK_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
-      - cp src/sagemaker_mxnet_serving_container/deep_learning_container.py docker/$FRAMEWORK_FULL_VERSION/py3/deep_learning_container.py
-      - cp src/sagemaker_mxnet_serving_container/deep_learning_container.py docker/$FRAMEWORK_FULL_VERSION/py2/deep_learning_container.py
+      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/sagemaker_mxnet_serving_container.tar.gz
+      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$EI_FRAMEWORK_VERSION/sagemaker_mxnet_serving_container.tar.gz
+      - cp docker/artifacts/* docker/$FRAMEWORK_FULL_VERSION
 
       - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2
       - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3

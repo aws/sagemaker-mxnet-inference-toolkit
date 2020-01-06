@@ -31,8 +31,8 @@ def _parse_args():
     return parser.parse_args()
 
 
-def _build_image(build_dir, arch, prev_image_uri, dest):
-    dockerfile = 'Dockerfile.{}'.format(arch)
+def _build_image(build_dir, arch, prev_image_uri, dest, py_major_version):
+    dockerfile = os.path.join('py{}'.format(py_major_version), 'Dockerfile.{}'.format(arch))
 
     build_cmd = [
         'docker', 'build',
@@ -65,16 +65,14 @@ def main():
         for py_version in ['2.7', '3.6']:
             tag_arch = 'cpu' if arch == 'eia' else arch
             framework_version = args.eia_version if (arch == 'eia' and args.eia_version) else args.version
-            root_build_dir = os.path.join('docker', framework_version)
+            build_dir = os.path.join('docker', framework_version)
             tag = '{}-{}-py{}'.format(framework_version, tag_arch, py_version[0])
 
             repo = '{}-eia'.format(args.repo) if arch == 'eia' else args.repo
             dest = '{}:{}'.format(repo, tag)
 
             prev_image_uri = '{}.dkr.ecr.{}.amazonaws.com/{}'.format(args.account, args.region, dest)
-
-            build_dir = os.path.join(root_build_dir, 'py{}'.format(py_version[0]))
-            _build_image(build_dir, arch, prev_image_uri, dest)
+            _build_image(build_dir, arch, prev_image_uri, dest, py_version[0])
 
 
 if __name__ == '__main__':
