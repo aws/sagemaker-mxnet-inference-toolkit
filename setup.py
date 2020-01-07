@@ -46,6 +46,8 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
+    # support sagemaker-inference==1.1.0 for mxnet 1.4 eia image and
+    # sagemaker-inference==1.1.2 version for mxnet 1.6 image.
     install_requires=['sagemaker-inference>=1.1.0,<=1.1.2', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
