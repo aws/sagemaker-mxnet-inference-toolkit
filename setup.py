@@ -1,4 +1,4 @@
-# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# Copyright 2019-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"). You
 # may not use this file except in compliance with the License. A copy of
@@ -46,6 +46,8 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
+    # support sagemaker-inference==1.1.0 for mxnet 1.4 eia image and
+    # sagemaker-inference==1.1.2 version for mxnet 1.6 image.
     install_requires=['sagemaker-inference>=1.1.0,<=1.1.2', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
