@@ -62,14 +62,17 @@ Example commands for building images:
 
     # All build instructions assume you're starting from this repository's root directory.
 
-    # MXNet 1.4.1, Python 3, CPU
-    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz docker/1.4.1/py3/sagemaker_mxnet_serving_container.tar.gz
-    $ cd docker/1.4.1/py3
-    $ docker build -t preprod-mxnet-serving:1.4.1-cpu-py3 -f Dockerfile.cpu .
+    # MXNet 1.6.0, Python 3, CPU
+    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz docker/1.6.0/py3/sagemaker_mxnet_serving_container.tar.gz
+    $ cp -r docker/artifacts/* docker/1.6.0/py3
+    $ cd docker/1.6.0/py3
+    $ docker build -t preprod-mxnet-serving:1.6.0-cpu-py3 -f Dockerfile.cpu .
 
-    # MXNet 1.4.1, Python 2, GPU
-    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz dist/sagemaker_mxnet_serving_container.tar.gz
-    $ docker build -t preprod-mxnet-serving:1.4.1-gpu-py2 -f docker/1.4.1/py2/Dockerfile.gpu .
+    # MXNet 1.6.0, Python 2, GPU
+    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz docker/1.6.0/py2/sagemaker_mxnet_serving_container.tar.gz
+    $ cp -r docker/artifacts/* docker/1.6.0/py2
+    $ cd docker/1.6.0/py2
+    $ docker build -t preprod-mxnet-serving:1.6.0-gpu-py2 -f docker/1.6.0/py2/Dockerfile.gpu .
 
 Don't forget the period at the end of the command!
 
@@ -165,9 +168,9 @@ To run local integration tests:
 
     # Example
     tox test/integration/local -- --docker-base-name preprod-mxnet-serving \
-                                  --tag 1.4.0-cpu-py3 \
+                                  --tag 1.6.0-cpu-py3 \
                                   --py-version 3 \
-                                  --framework-version 1.4.0 \
+                                  --framework-version 1.6.0 \
                                   --processor cpu
 
 SageMaker Integration Tests
@@ -202,7 +205,7 @@ To run SageMaker integration tests:
     tox test/integration/sagemaker -- --aws-id 12345678910 \
                                       --docker-base-name preprod-mxnet-serving \
                                       --instance-type ml.m4.xlarge \
-                                      --tag 1.4.0-cpu-py3
+                                      --tag 1.6.0-cpu-py3
 
 If you want to run a SageMaker end to end test for your Elastic Inference container, you will need to provide an ``accelerator_type`` as an additional pytest argument.
 
