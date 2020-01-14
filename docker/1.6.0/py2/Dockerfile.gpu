@@ -49,6 +49,9 @@ COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container
 
 RUN ${PIP} install --no-cache-dir \
     ${MX_URL} \
+    # setuptools<45.0.0 because support for py2 stops with 45.0.0
+    # https://github.com/pypa/setuptools/blob/master/CHANGES.rst#v4500
+    "setuptools<45.0.0" \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
     numpy==1.16.5 \

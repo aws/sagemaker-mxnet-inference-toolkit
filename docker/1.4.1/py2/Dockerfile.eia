@@ -48,6 +48,9 @@ RUN pip install --no-cache-dir \
     https://s3.amazonaws.com/amazonei-apachemxnet/amazonei_mxnet-1.4.1-py2.py3-none-manylinux1_x86_64.whl \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
+    # setuptools<45.0.0 because support for py2 stops with 45.0.0
+    # https://github.com/pypa/setuptools/blob/master/CHANGES.rst#v4500
+    "setuptools<45.0.0" \
     onnx==1.4.1 \
     # use sagemaker-inference version comaptible with MMS_VERSION=1.0.5
     sagemaker-inference==1.1.0 \
