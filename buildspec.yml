@@ -45,9 +45,11 @@ phases:
       # build images
       - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO
 
+      - HAS_MATCHING_CHANGES_OUTPUT=$(has-matching-changes "test/" "tests/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml")
+
       # run cpu local integration tests
       - |
-        if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
+        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
           IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO
         else
           echo "skipping cpu integration tests"
@@ -62,7 +64,7 @@ phases:
 
       # run gpu local integration tests
       - |
-        if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
+        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
           printf "$SETUP_CMDS" > $SETUP_FILE
           ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
           cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
@@ -73,7 +75,7 @@ phases:
 
       # run sagemaker integration tests
       - |
-        if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
+        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
           IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5
         else
           echo "skipping sagemaker integration tests"
@@ -81,7 +83,7 @@ phases:
 
       # run eia tests
       - |
-        if has-matching-changes "test/" "tests/" "src/*.py" "docker/*" "buildspec.yml"; then
+        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
           IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION
         else
           echo "skipping sagemaker eia tests"
