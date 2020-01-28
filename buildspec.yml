@@ -57,7 +57,7 @@ phases:
       - launch-ec2-instance --instance-type $GPU_INSTANCE_TYPE --ami-name dlami-ubuntu
 
       # run gpu local integration tests
-      - printf \"$SETUP_CMDS\" > $SETUP_FILE
+      - printf $SETUP_CMDS > $SETUP_FILE
       - ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
       - tox_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
       - test_cmd="remote-test --test-cmd \"$tox_cmd\" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE"
