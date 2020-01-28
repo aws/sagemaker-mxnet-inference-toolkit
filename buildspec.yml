@@ -45,15 +45,9 @@ phases:
       # build images
       - python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO
 
-      - HAS_MATCHING_CHANGES_OUTPUT=$(has-matching-changes "test/" "tests/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml")
-
       # run cpu local integration tests
-      - |
-        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO
-        else
-          echo "skipping cpu integration tests"
-        fi
+      - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml"
 
       # push docker images to ECR
       - python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO
@@ -63,31 +57,19 @@ phases:
       - launch-ec2-instance --instance-type $GPU_INSTANCE_TYPE --ami-name dlami-ubuntu
 
       # run gpu local integration tests
-      - |
-        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
-          printf "$SETUP_CMDS" > $SETUP_FILE
-          ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
-          cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
-          remote-test --test-cmd "$cmd" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE
-        else
-          echo "skipping local gpu integration tests"
-        fi
+      - printf "$SETUP_CMDS" > $SETUP_FILE
+      - ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
+      - tox_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
+      - test_cmd="remote-test --test-cmd \"$tox_cmd\" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml"
 
       # run sagemaker integration tests
-      - |
-        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5
-        else
-          echo "skipping sagemaker integration tests"
-        fi
+      - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml"
 
       # run eia tests
-      - |
-        if [ "$HAS_MATCHING_CHANGES" = "Changes Found" ] ; then
-          IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name "$ECR_REPO-eia" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION
-        else
-          echo "skipping sagemaker eia tests"
-        fi
+      - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name \"$ECR_REPO-eia\" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "src/*.py" "setup.py" "setup.cfg" "docker/*" "buildspec.yml"
 
     finally:
       # shut down remote gpu instance
