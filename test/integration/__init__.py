@@ -18,7 +18,9 @@ RESOURCE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'r
 
 # EI is currently only supported in the following regions
 # regions were derived from https://aws.amazon.com/machine-learning/elastic-inference/pricing/
-EI_SUPPORTED_REGIONS = ['us-east-1', 'us-east-2', 'us-west-2', 'eu-west-1', 'ap-northeast-1', 'ap-northeast-2']
+EI_SUPPORTED_REGIONS = ['us-east-1', 'us-east-2', 'us-west-2',
+                        'eu-west-1', 'eu-west-2',
+                        'ap-northeast-1', 'ap-northeast-2']
 
 # These regions have some p2 and p3 instances, but not enough for automated testing
 NO_P2_REGIONS = ['ca-central-1', 'eu-central-1', 'eu-west-2', 'us-west-1', 'eu-west-3',
