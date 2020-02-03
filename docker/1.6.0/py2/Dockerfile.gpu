@@ -70,10 +70,8 @@ RUN useradd -m model-server \
 
 COPY mms-entrypoint.py /usr/local/bin/dockerd-entrypoint.py
 COPY config.properties /home/model-server
-COPY deep_learning_container.py /usr/local/bin/deep_learning_container.py
 
-RUN chmod +x /usr/local/bin/dockerd-entrypoint.py \
- && chmod +x /usr/local/bin/deep_learning_container.py
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.py
 
 RUN curl https://aws-dlc-licenses.s3.amazonaws.com/mxnet/license.txt -o /license.txt
 
