@@ -71,7 +71,7 @@ COPY sagemaker_mxnet_serving_container.tar.gz /sagemaker_mxnet_serving_container
 
 RUN ${PIP} install --no-cache-dir \
     ${MX_URL} \
-    git+git://github.com/dmlc/gluon-nlp.git@a0d7fbb1b9be4b155c9b03ecdf56ae4c844389c8 \
+    git+git://github.com/dmlc/gluon-nlp.git@v0.9.0 \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
     numpy==1.17.4 \
