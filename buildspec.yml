@@ -27,13 +27,13 @@ phases:
       # run unit tests
       - tox -e py27,py36 test/unit
 
-      # create pip archive (tar name will be something like sagemaker_mxnet_serving_container-1.0.0.tar.gz, but the Dockerfiles expect sagemaker_mxnet_serving_container.tar.gz)
+      # create pip archive (tar name will be something like sagemaker_mxnet_inference-1.0.0.tar.gz, but the Dockerfiles expect sagemaker_mxnet_inference.tar.gz)
       - python3 setup.py sdist
-      - mv dist/sagemaker_mxnet_serving_container-*.tar.gz dist/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$FRAMEWORK_FULL_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$EI_FRAMEWORK_VERSION/py3/sagemaker_mxnet_serving_container.tar.gz
-      - cp dist/sagemaker_mxnet_serving_container.tar.gz docker/$EI_FRAMEWORK_VERSION/py2/sagemaker_mxnet_serving_container.tar.gz
+      - mv dist/sagemaker_mxnet_inference-*.tar.gz dist/sagemaker_mxnet_inference.tar.gz
+      - cp dist/sagemaker_mxnet_inference.tar.gz docker/$FRAMEWORK_FULL_VERSION/py3/sagemaker_mxnet_inference.tar.gz
+      - cp dist/sagemaker_mxnet_inference.tar.gz docker/$FRAMEWORK_FULL_VERSION/py2/sagemaker_mxnet_inference.tar.gz
+      - cp dist/sagemaker_mxnet_inference.tar.gz docker/$EI_FRAMEWORK_VERSION/py3/sagemaker_mxnet_inference.tar.gz
+      - cp dist/sagemaker_mxnet_inference.tar.gz docker/$EI_FRAMEWORK_VERSION/py2/sagemaker_mxnet_inference.tar.gz
       - cp -r docker/artifacts/* docker/$FRAMEWORK_FULL_VERSION/py3
       - cp -r docker/artifacts/* docker/$FRAMEWORK_FULL_VERSION/py2
 
