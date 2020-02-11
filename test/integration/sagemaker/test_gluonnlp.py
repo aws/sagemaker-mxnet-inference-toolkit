@@ -31,7 +31,7 @@ def test_gluonnlp(sagemaker_session, ecr_image, instance_type, framework_version
     import urllib.request
     tmpdir = tempfile.mkdtemp()
     tmpfile = os.path.join(tmpdir, 'bert_sst.tar.gz')
-    urllib.request.urlretrieve('https://lausen-public.s3.amazonaws.com/bert_sst.tar.gz', tmpfile)
+    urllib.request.urlretrieve('https://aws-dlc-sample-models.s3.amazonaws.com/bert_sst/bert_sst.tar.gz', tmpfile)
 
     prefix = 'gluonnlp-serving/default-handlers'
     model_data = sagemaker_session.upload_data(path=tmpfile, key_prefix=prefix)
