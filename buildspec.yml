@@ -22,7 +22,7 @@ phases:
   build:
     commands:
       # run linter
-      - tox -e flake8
+      - tox -e flake8,twine
 
       # run unit tests
       - tox -e py27,py36 test/unit
