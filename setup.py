@@ -23,7 +23,7 @@ def read(fname):
 
 
 setup(
-    name='sagemaker_mxnet_serving_container',
+    name='sagemaker_mxnet_inference',
     version=read('VERSION').strip(),
     description='Open source library for creating MXNet containers for serving on SageMaker.',
 
