@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.2 (2020-02-19)
+
+### Bug Fixes and Other Changes
+
+ * change remove multi-model label from dockerfiles
+
 ## v1.2.1 (2020-02-17)
 
 ### Bug Fixes and Other Changes
