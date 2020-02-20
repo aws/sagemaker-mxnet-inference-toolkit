@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.3 (2020-02-20)
+
+### Bug Fixes and Other Changes
+
+ * copy all tests to test-toolkit folder.
+
 ## v1.2.2 (2020-02-19)
 
 ### Bug Fixes and Other Changes
