@@ -1,5 +1,49 @@
 # Changelog
 
+## v1.2.3 (2020-02-20)
+
+### Bug Fixes and Other Changes
+
+ * copy all tests to test-toolkit folder.
+
+## v1.2.2 (2020-02-19)
+
+### Bug Fixes and Other Changes
+
+ * change remove multi-model label from dockerfiles
+
+## v1.2.1 (2020-02-17)
+
+### Bug Fixes and Other Changes
+
+ * update: Update license URL
+
+## v1.2.0 (2020-02-12)
+
+### Features
+
+ * Add release to PyPI. Change package name to sagemaker-mxnet-inference.
+
+### Bug Fixes and Other Changes
+
+ * Add GluonNLP
+ * Update AWS-MXNet version to 1.6.0 - official release of 1.6
+ * Update build artifacts
+ * Revert "change: install python-dateutil explicitly for botocore (#81)"
+ * pin in setuptools in py2 containers
+ * make build context the directory with the given dockerfile
+ * update copyright year in license header
+ * add comments about sagemaker-inference version
+ * release 1.6.0 Dockerfiles
+ * install python-dateutil explicitly for botocore
+ * use regional endpoint for STS in builds
+ * Update toolkit version
+
+### Testing and Release Infrastructure
+
+ * properly fail build if has-matching-changes fails
+ * properly fail build if has-matching-changes fails
+
 ## v1.1.5 (2019-10-22)
 
 ### Bug fixes and other changes
