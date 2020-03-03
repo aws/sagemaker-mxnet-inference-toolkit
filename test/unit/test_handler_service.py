@@ -27,10 +27,14 @@ MODULE_NAME = 'module_name'
 
 
 @patch('sagemaker_mxnet_serving_container.handler_service.HandlerService._user_module_transformer')
-def test_handler_service(user_module_transformer):
+@patch('sagemaker_inference.default_handler_service.DefaultHandlerService.initialize')
+def test_handler_service(user_module_transformer, initialize):
     service = HandlerService()
 
-    assert service._service == user_module_transformer()
+    context = Mock()
+    service.initialize(context)
+
+    assert isinstance(service._service, Mock)
 
 
 class UserModuleTransformFn:
