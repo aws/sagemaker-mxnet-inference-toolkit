@@ -37,10 +37,10 @@ class HandlerService(DefaultHandlerService):
 
     """
     def __init__(self):
-        super(HandlerService, self).__init__(transformer=self._user_module_transformer())
+        self._service = None
 
     @staticmethod
-    def _user_module_transformer():
+    def _user_module_transformer(model_dir):
         user_module = importlib.import_module(environment.Environment().module_name)
 
         if hasattr(user_module, 'transform_fn'):
@@ -48,10 +48,19 @@ class HandlerService(DefaultHandlerService):
 
         model_fn = getattr(user_module, 'model_fn', DefaultMXNetInferenceHandler().default_model_fn)
 
-        model = model_fn(environment.model_dir)
+        model = model_fn(model_dir)
         if isinstance(model, mx.module.BaseModule):
             return MXNetModuleTransformer()
         elif isinstance(model, mx.gluon.block.Block):
             return Transformer(default_inference_handler=DefaultGluonBlockInferenceHandler())
         else:
             raise ValueError('Unsupported model type: {}'.format(model.__class__.__name__))
+
+    def initialize(self, context):
+        """Calls the Transformer method that validates the user module against
+        the SageMaker inference contract.
+        """
+        properties = context.system_properties
+        model_dir = properties.get("model_dir")
+        self._service = self._user_module_transformer(model_dir)
+        super(HandlerService, self).initialize(context)
