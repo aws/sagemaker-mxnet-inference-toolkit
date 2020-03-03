@@ -40,7 +40,7 @@ class HandlerService(DefaultHandlerService):
         self._service = None
 
     @staticmethod
-    def _user_module_transformer(model_dir):
+    def _user_module_transformer(model_dir=environment.model_dir):
         user_module = importlib.import_module(environment.Environment().module_name)
 
         if hasattr(user_module, 'transform_fn'):
