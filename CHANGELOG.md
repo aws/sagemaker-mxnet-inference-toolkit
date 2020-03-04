@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.4 (2020-03-04)
+
+### Bug Fixes and Other Changes
+
+ * Modify HandlerService to use context model_dir
+
 ## v1.2.3 (2020-02-20)
 
 ### Bug Fixes and Other Changes
