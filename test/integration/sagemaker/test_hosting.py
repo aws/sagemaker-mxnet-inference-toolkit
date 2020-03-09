@@ -71,7 +71,7 @@ def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_vers
         sagemaker_session=sagemaker_session,
     )
 
-    multi_data_model.add_model(mxnet_model.model_data, MODEL_PATH)
+    multi_data_model.add_model(mxnet_model.model_data)
 
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
         predictor = multi_data_model.deploy(1, instance_type, endpoint_name=endpoint_name)
