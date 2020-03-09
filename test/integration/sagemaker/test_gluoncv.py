@@ -13,8 +13,8 @@
 from __future__ import absolute_import
 
 import os
-import tempfile
 import json
+import tempfile
 
 import pytest
 from sagemaker import utils
