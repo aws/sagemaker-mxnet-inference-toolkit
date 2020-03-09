@@ -50,6 +50,7 @@ def test_hosting(sagemaker_session, ecr_image, instance_type, framework_version)
 def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
     prefix = "mxnet-serving/default-handlers"
     model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=prefix)
+    model_key = os.path.join(prefix, "model.tar.gz")
 
     timestamp = sagemaker_timestamp()
     endpoint_name = "test-mxnet-multimodel-endpoint-{}".format(timestamp)
@@ -76,5 +77,5 @@ def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_vers
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
         predictor = multi_data_model.deploy(1, instance_type, endpoint_name=endpoint_name)
 
-        output = predictor.predict(data=[[1, 2]], target_model=model_data)
+        output = predictor.predict(data=[[1, 2]], target_model=model_key)
         assert [[4.9999918937683105]] == output
