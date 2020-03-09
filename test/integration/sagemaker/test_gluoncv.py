@@ -12,8 +12,8 @@
 # permissions and limitations under the License.
 from __future__ import absolute_import
 
-import os
 import json
+import os
 import tempfile
 
 import pytest
