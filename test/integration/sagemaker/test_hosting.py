@@ -76,5 +76,5 @@ def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_vers
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
         predictor = multi_data_model.deploy(1, instance_type, endpoint_name=endpoint_name)
 
-        output = predictor.predict(data=[[1, 2]], model=model_data)
+        output = predictor.predict(data=[[1, 2]], target_model=model_data)
         assert [[4.9999918937683105]] == output
