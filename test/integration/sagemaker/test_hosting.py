@@ -13,10 +13,12 @@
 from __future__ import absolute_import
 
 import os
+import numpy
 
 from sagemaker import utils
 from sagemaker.multidatamodel import MultiDataModel
 from sagemaker.mxnet.model import MXNetModel
+from sagemaker.predictor import RealTimePredictor, StringDeserializer, npy_serializer
 from sagemaker.utils import sagemaker_timestamp
 
 from test.integration import RESOURCE_PATH
@@ -25,6 +27,8 @@ from test.integration.sagemaker import timeout
 DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, "default_handlers")
 MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, "model.tar.gz")
 SCRIPT_PATH = os.path.join(DEFAULT_HANDLER_PATH, "model", "code", "empty_module.py")
+
+string_deserializer = StringDeserializer()
 
 
 def test_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
@@ -50,7 +54,6 @@ def test_hosting(sagemaker_session, ecr_image, instance_type, framework_version)
 def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
     prefix = "mxnet-serving/default-handlers"
     model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=prefix)
-    model_key = os.path.join(prefix, "model.tar.gz")
 
     timestamp = sagemaker_timestamp()
     endpoint_name = "test-mxnet-multimodel-endpoint-{}".format(timestamp)
@@ -75,7 +78,17 @@ def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_vers
     multi_data_model.add_model(mxnet_model.model_data)
 
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
-        predictor = multi_data_model.deploy(1, instance_type, endpoint_name=endpoint_name)
+        multi_data_model.deploy(1, instance_type, endpoint_name=endpoint_name)
 
-        output = predictor.predict(data=[[1, 2]])
-        assert [[4.9999918937683105]] == output
+        predictor = RealTimePredictor(
+            endpoint=endpoint_name,
+            sagemaker_session=sagemaker_session,
+            serializer=npy_serializer,
+            deserializer=string_deserializer,
+        )
+
+        for model in multi_data_model.list_models():
+            data = numpy.zeros(shape=(1, 1, 28, 28))
+            result = predictor.predict(data, target_model=model)
+            assert result == "Invoked model: {}".format(model)
+
