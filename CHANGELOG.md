@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.5 (2020-03-09)
+
+### Bug Fixes and Other Changes
+
+ * Upgrade the version of sagemaker-inference
+
 ## v1.2.4 (2020-03-04)
 
 ### Bug Fixes and Other Changes
