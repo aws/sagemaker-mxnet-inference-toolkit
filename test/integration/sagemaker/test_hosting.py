@@ -13,12 +13,12 @@
 from __future__ import absolute_import
 
 import os
-import numpy
 
+import numpy
 from sagemaker import utils
 from sagemaker.multidatamodel import MultiDataModel
 from sagemaker.mxnet.model import MXNetModel
-from sagemaker.predictor import RealTimePredictor, StringDeserializer, npy_serializer
+from sagemaker.predictor import npy_serializer, RealTimePredictor, StringDeserializer
 from sagemaker.utils import sagemaker_timestamp
 
 from test.integration import RESOURCE_PATH
@@ -91,4 +91,3 @@ def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_vers
             data = numpy.zeros(shape=(1, 1, 28, 28))
             result = predictor.predict(data, target_model=model)
             assert result == "Invoked model: {}".format(model)
-
