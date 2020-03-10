@@ -15,27 +15,62 @@ from __future__ import absolute_import
 import os
 
 from sagemaker import utils
+from sagemaker.multidatamodel import MultiDataModel
 from sagemaker.mxnet.model import MXNetModel
 
 from test.integration import RESOURCE_PATH
 from test.integration.sagemaker import timeout
 
-DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, 'default_handlers')
-MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model.tar.gz')
-SCRIPT_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model', 'code', 'empty_module.py')
+DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, "default_handlers")
+MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, "model.tar.gz")
+SCRIPT_PATH = os.path.join(DEFAULT_HANDLER_PATH, "model", "code", "empty_module.py")
 
 
 def test_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
-    prefix = 'mxnet-serving/default-handlers'
+    prefix = "mxnet-serving/default-handlers"
     model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=prefix)
-    model = MXNetModel(model_data,
-                       'SageMakerRole',
-                       SCRIPT_PATH,
-                       image=ecr_image,
-                       framework_version=framework_version,
-                       sagemaker_session=sagemaker_session)
+    model = MXNetModel(
+        model_data,
+        "SageMakerRole",
+        SCRIPT_PATH,
+        image=ecr_image,
+        framework_version=framework_version,
+        sagemaker_session=sagemaker_session,
+    )
 
-    endpoint_name = utils.unique_name_from_base('test-mxnet-serving')
+    endpoint_name = utils.unique_name_from_base("test-mxnet-serving")
+    with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
+        predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
+
+        output = predictor.predict([[1, 2]])
+        assert [[4.9999918937683105]] == output
+
+
+def test_mme_hosting(sagemaker_session, ecr_image, instance_type, framework_version):
+    prefix = "mxnet-serving/default-handlers"
+    model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=prefix)
+
+    endpoint_name = utils.unique_name_from_base("test-mxnet-multimodel-endpoint")
+    model_name = utils.unique_name_from_base("test-mxnet-multimodel")
+
+    model = MXNetModel(
+        model_data,
+        "SageMakerRole",
+        SCRIPT_PATH,
+        image=ecr_image,
+        framework_version=framework_version,
+        sagemaker_session=sagemaker_session,
+    )
+
+    multi_data_model = MultiDataModel(
+        name=model_name,
+        model_data_prefix=model_data,
+        model=model,
+        sagemaker_session=sagemaker_session,
+    )
+
+    multi_data_model.add_model(model.model_data)
+
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
         predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
 
