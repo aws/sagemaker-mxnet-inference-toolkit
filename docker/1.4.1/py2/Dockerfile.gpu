@@ -1,7 +1,6 @@
 FROM nvidia/cuda:10.0-cudnn7-runtime-ubuntu16.04
 
 LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
-LABEL com.amazonaws.sagemaker.capabilities.multi-models=true
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
