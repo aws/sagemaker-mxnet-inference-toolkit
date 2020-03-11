@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.6 (2020-03-11)
+
+### Bug Fixes and Other Changes
+
+ * Test MME hosting with MultiDataModel
+
 ## v1.2.5 (2020-03-09)
 
 ### Bug Fixes and Other Changes
