@@ -43,7 +43,6 @@ def model_fn(model_dir):
 
     return net, image_transform, batchify
 
-
 def transform_fn(model, data, input_content_type, output_content_type):
     """
     Transform a request using the GluonNLP model. Called once per request.
