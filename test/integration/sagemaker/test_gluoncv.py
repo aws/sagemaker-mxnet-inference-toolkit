@@ -34,7 +34,6 @@ def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version)
     tmpdir = tempfile.mkdtemp()
     tmpfile = os.path.join(tmpdir, 'yolo3_darknet53_voc.tar.gz')
     urllib.request.urlretrieve('https://dlc-samples.s3.amazonaws.com/mxnet/gluon/yolo3_darknet53_voc.tar.gz', tmpfile)
-
     prefix = 'gluoncv-serving/default-handlers'
     model_data = sagemaker_session.upload_data(path=tmpfile, key_prefix=prefix)
 
