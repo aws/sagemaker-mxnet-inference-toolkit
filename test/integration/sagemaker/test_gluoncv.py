@@ -30,10 +30,13 @@ SCRIPT_DATA_PATH = os.path.join(GLUONCV_PATH, 'dog.jpg')
 
 @pytest.mark.skip_py2_containers
 def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version):
-    import urllib.request
+    try:  # python3
+        from urllib.request import urlretrieve
+    except:  # python2
+        from urllib import urlretrieve
     tmpdir = tempfile.mkdtemp()
     tmpfile = os.path.join(tmpdir, 'yolo3_darknet53_voc.tar.gz')
-    urllib.request.urlretrieve('https://dlc-samples.s3.amazonaws.com/mxnet/gluon/yolo3_darknet53_voc.tar.gz', tmpfile)
+    urlretrieve('https://dlc-samples.s3.amazonaws.com/mxnet/gluon/yolo3_darknet53_voc.tar.gz', tmpfile)
     prefix = 'gluoncv-serving/default-handlers'
     model_data = sagemaker_session.upload_data(path=tmpfile, key_prefix=prefix)
 
