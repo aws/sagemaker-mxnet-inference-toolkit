@@ -56,6 +56,7 @@ def transform_fn(model, data, input_content_type, output_content_type):
     net, image_transform, batchify = model
     batch = json.loads(data)
     model_input = batchify(image_transform(batch))
+    return True
 
-    x = net(model_input)
-    return (x[0].asnumpy().tolist(), x[1].asnumpy().tolist(), x[2].asnumpy().tolist())
+    #x = net(model_input)
+    #return (x[0].asnumpy().tolist(), x[1].asnumpy().tolist(), x[2].asnumpy().tolist())
