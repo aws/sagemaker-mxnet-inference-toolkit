@@ -38,19 +38,3 @@ def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version)
     tmpfile = os.path.join(tmpdir, 'yolo3_darknet53_voc.tar.gz')
     urlretrieve('https://dlc-samples.s3.amazonaws.com/mxnet/gluon/yolo3_darknet53_voc.tar.gz', tmpfile)
     prefix = 'gluoncv-serving/default-handlers'
-    model_data = sagemaker_session.upload_data(path=tmpfile, key_prefix=prefix)
-
-    model = MXNetModel(model_data,
-                       'SageMakerRole',
-                       SCRIPT_PATH,
-                       image=ecr_image,
-                       py_version="py3",
-                       framework_version=framework_version,
-                       sagemaker_session=sagemaker_session)
-
-    endpoint_name = utils.unique_name_from_base('test-mxnet-gluoncv')
-    with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
-        predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
-        with open(SCRIPT_DATA_PATH, 'rb') as fdata:
-            output = predictor.predict(json.dumps([fdata.read().hex()]))
-        assert output[0][0].size == 100
