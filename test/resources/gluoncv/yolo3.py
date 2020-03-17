@@ -14,6 +14,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+# flake8: noqa
 import json
 import os
 
@@ -57,4 +58,4 @@ def transform_fn(model, data, input_content_type, output_content_type):
     model_input = batchify(image_transform(batch))
 
     x = net(model_input)
-    return y = (x[0].asnumpy(), x[1].asnumpy(), x[2].asnumpy())
+    return (x[0].asnumpy().tolist(), x[1].asnumpy().tolist(), x[2].asnumpy().tolist())
