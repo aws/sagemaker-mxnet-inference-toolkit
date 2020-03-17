@@ -32,7 +32,7 @@ def model_fn(model_dir):
         pretrained=False,
         ctx=ctx)
     batchify = gcv.data.batchify.Stack()
-    net.load_parameters(os.path.join(model_dir, 'yolo3_darknet53_voc.params'), mx.cpu(0))
+    # net.load_parameters(os.path.join(model_dir, 'yolo3_darknet53_voc.params'), mx.cpu(0))
     net.hybridize()
     def image_transform(im_bytes):
         """
