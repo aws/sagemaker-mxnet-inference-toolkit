@@ -54,5 +54,5 @@ def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version)
     with timeout.timeout_and_delete_endpoint_by_name(endpoint_name, sagemaker_session):
         predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
         with open(SCRIPT_DATA_PATH, 'rb') as fdata:
-            output = predictor.predict(json.dumps([fdata.read().hex()]))
+            output = predictor.predict([fdata.read().hex()])
         # assert output[0][0].size == 100

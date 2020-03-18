@@ -38,7 +38,8 @@ def model_fn(model_dir):
         """
         Apply image transformation to raw byte images
         """
-        img = [mx.image.imdecode(bytes.fromhex(im)) for im in im_bytes]
+        print(im_bytes[0][:100])
+        img = [mx.image.imdecode(bytes.fromhex(im.lstrip('0x'))) for im in im_bytes]
         out = gcv.data.transforms.presets.yolo.transform_test(img)
         return out[0]
 
@@ -46,7 +47,7 @@ def model_fn(model_dir):
 
 def transform_fn(model, data, input_content_type, output_content_type):
     """
-    Transform a request using the GluonNLP model. Called once per request.
+    Transform a request using the GluonCV model. Called once per request.
     :param model: The Gluon model and the vocab
     :param data: The request payload.
     :param input_content_type: The request content type.
@@ -55,7 +56,7 @@ def transform_fn(model, data, input_content_type, output_content_type):
     """
     net, image_transform, batchify = model
     batch = json.loads(data)
-    model_input = batchify(image_transform(batch))
+    model_input = image_transform(batch)
     return True
 
     #x = net(model_input)
