@@ -33,7 +33,7 @@ def model_fn(model_dir):
         ctx=ctx)
     batchify = gcv.data.batchify.Stack()
     # net.load_parameters(os.path.join(model_dir, 'yolo3_darknet53_voc.params'), mx.cpu(0))
-    net.hybridize()
+    # net.hybridize()
     def image_transform(im_bytes):
         """
         Apply image transformation to raw byte images
@@ -53,7 +53,7 @@ def transform_fn(model, data, input_content_type, output_content_type):
     :param output_content_type: The (desired) response content type.
     :return: response payload and content type.
     """
-    # net, image_transform, batchify = model
+    net, image_transform, batchify = model
     batch = json.loads(data)
     # model_input = batchify(image_transform(batch))
     return True
