@@ -53,9 +53,9 @@ def transform_fn(model, data, input_content_type, output_content_type):
     :param output_content_type: The (desired) response content type.
     :return: response payload and content type.
     """
-    net, image_transform, batchify = model
+    # net, image_transform, batchify = model
     batch = json.loads(data)
-    model_input = batchify(image_transform(batch))
+    # model_input = batchify(image_transform(batch))
     return True
 
     #x = net(model_input)
