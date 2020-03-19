@@ -38,7 +38,6 @@ def model_fn(model_dir):
         """
         Apply image transformation to raw byte images
         """
-        print(im_bytes[0][:100])
         img = [mx.image.imdecode(bytes.fromhex(im.lstrip('0x'))) for im in im_bytes]
         out = gcv.data.transforms.presets.yolo.transform_test(img)
         return out[0]
@@ -56,7 +55,7 @@ def transform_fn(model, data, input_content_type, output_content_type):
     """
     net, image_transform, batchify = model
     batch = json.loads(data)
-    model_input = image_transform(batch)
+    model_input = batchify(image_transform(batch))
     return True
 
     #x = net(model_input)
