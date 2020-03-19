@@ -10,7 +10,6 @@
 # on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 # express or implied. See the License for the specific language governing
 # permissions and limitations under the License.
-# flake8: noqa
 from __future__ import absolute_import
 
 import json
@@ -55,4 +54,4 @@ def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version)
         predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
         with open(SCRIPT_DATA_PATH, 'rb') as fdata:
             output = predictor.predict([fdata.read().hex()])
-        # assert output[0][0].size == 100
+        assert len(output[0][0]) == 100

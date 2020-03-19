@@ -14,7 +14,6 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-# flake8: noqa
 import json
 import os
 
@@ -33,7 +32,6 @@ def model_fn(model_dir):
         ctx=ctx)
     batchify = gcv.data.batchify._stack_arrs
     net.load_parameters(os.path.join(model_dir, 'yolo3_darknet53_voc.params'), mx.cpu(0))
-    # net.initialize()
     net.hybridize()
     def image_transform(im_bytes):
         """
@@ -59,5 +57,4 @@ def transform_fn(model, data, input_content_type, output_content_type):
     model_input = batchify(image_transform(batch))
 
     x = net(model_input)
-    return x[0].asnumpy().tolist()
-    #return (x[0].asnumpy().tolist(), x[1].asnumpy().tolist(), x[2].asnumpy().tolist())
+    return (x[0].asnumpy().tolist(), x[1].asnumpy().tolist(), x[2].asnumpy().tolist())
