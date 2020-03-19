@@ -53,4 +53,4 @@ def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version)
         predictor = model.deploy(1, instance_type, endpoint_name=endpoint_name)
         with open(SCRIPT_DATA_PATH, 'rb') as fdata:
             output = predictor.predict([fdata.read().hex()])
-        assert len(output[0][0]) == 100
+        assert len(output[0]) == 100
