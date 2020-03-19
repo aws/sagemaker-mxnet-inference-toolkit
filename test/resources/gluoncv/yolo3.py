@@ -33,7 +33,8 @@ def model_fn(model_dir):
         ctx=ctx)
     batchify = gcv.data.batchify._stack_arrs
     # net.load_parameters(os.path.join(model_dir, 'yolo3_darknet53_voc.params'), mx.cpu(0))
-    # net.hybridize()
+    net.initialize()
+    net.hybridize()
     def image_transform(im_bytes):
         """
         Apply image transformation to raw byte images
