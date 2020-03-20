@@ -18,8 +18,8 @@ import pytest
 from sagemaker import utils
 from sagemaker.mxnet import MXNetModel
 
-from test.integration import EI_SUPPORTED_REGIONS, RESOURCE_PATH
-from test.integration.sagemaker.timeout import timeout_and_delete_endpoint_by_name
+from integration import EI_SUPPORTED_REGIONS, RESOURCE_PATH
+from integration.sagemaker.timeout import timeout_and_delete_endpoint_by_name
 
 DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, 'default_handlers')
 MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model.tar.gz')
@@ -40,7 +40,7 @@ def skip_if_non_supported_ei_region(region):
 
 @pytest.mark.skip_if_non_supported_ei_region()
 @pytest.mark.skip_if_no_accelerator()
-def test_elastic_inference(ecr_image, sagemaker_session, instance_type, accelerator_type, framework_version):
+def test_elastic_inference(image_uri, sagemaker_session, instance_type, accelerator_type, framework_version):
     endpoint_name = utils.unique_name_from_base('test-mxnet-ei')
 
     with timeout_and_delete_endpoint_by_name(endpoint_name=endpoint_name,
@@ -51,7 +51,7 @@ def test_elastic_inference(ecr_image, sagemaker_session, instance_type, accelera
         model = MXNetModel(model_data=model_data,
                            entry_point=SCRIPT_PATH,
                            role='SageMakerRole',
-                           image=ecr_image,
+                           image=image_uri,
                            framework_version=framework_version,
                            sagemaker_session=sagemaker_session)
 
