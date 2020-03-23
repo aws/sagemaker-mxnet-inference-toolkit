@@ -36,8 +36,6 @@ class HandlerService(DefaultHandlerService):
     Based on: https://github.com/awslabs/mxnet-model-server/blob/master/docs/custom_service.md
 
     """
-    def __init__(self):
-        self._service = None
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
