@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.6.post0 (2020-03-24)
+
+### Testing and Release Infrastructure
+
+ * refactor toolkit tests.
+
 ## v1.2.6 (2020-03-11)
 
 ### Bug Fixes and Other Changes
