@@ -41,19 +41,6 @@ The Dockerfiles in this repository are intended to be used for building Docker i
 The current master branch of this repository contains Dockerfiles and support code for MXNet versions 1.4.0 and higher. For previous versions, see `SageMaker MXNet container <https://github.com/aws/sagemaker-mxnet-container>`__.
 The instructions in this version of this README are for MXNet 1.4.1 and higher. For MXNet 1.4.0, see `the previous version of this file <https://github.com/aws/sagemaker-mxnet-serving-container/blob/5ec2328c20612c2aa3474c978e459b4bca033f27/README.rst>`__.
 
-Before building these images, you need to have the pip-installable binary of this repository. To create the SageMaker MXNet Container Python package:
-
-::
-
-    git clone https://github.com/aws/sagemaker-mxnet-serving-container.git
-    cd sagemaker-mxnet-serving-container
-    python setup.py sdist
-
-For the Python 2 and EI images, this binary should remain in ``dist/``.
-For the Python 3 CPU and GPU images, this binary should be copied to ``docker/<framework_version>/py3``.
-In both cases, the binary should be renamed to ``sagemaker_mxnet_serving_container.tar.gz``.
-
-Once you have created this binary, you can then build the image.
 The integration tests expect the Docker images to be tagged as ``preprod-mxnet-serving:<tag>``, where ``<tag>`` looks like <mxnet_version>-<processor>-<python_version> (e.g. 1.4.1-cpu-py3).
 
 Example commands for building images:
@@ -63,13 +50,11 @@ Example commands for building images:
     # All build instructions assume you're starting from this repository's root directory.
 
     # MXNet 1.6.0, Python 3, CPU
-    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz docker/1.6.0/py3/sagemaker_mxnet_serving_container.tar.gz
     $ cp -r docker/artifacts/* docker/1.6.0/py3
     $ cd docker/1.6.0/py3
     $ docker build -t preprod-mxnet-serving:1.6.0-cpu-py3 -f Dockerfile.cpu .
 
     # MXNet 1.6.0, Python 2, GPU
-    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz docker/1.6.0/py2/sagemaker_mxnet_serving_container.tar.gz
     $ cp -r docker/artifacts/* docker/1.6.0/py2
     $ cd docker/1.6.0/py2
     $ docker build -t preprod-mxnet-serving:1.6.0-gpu-py2 -f docker/1.6.0/py2/Dockerfile.gpu .
@@ -105,7 +90,6 @@ Example:
 ::
 
     # MXNet 1.4.1, Python 3, EI
-    $ cp dist/sagemaker_mxnet_serving_container-*.tar.gz dist/sagemaker_mxnet_serving_container.tar.gz
     $ docker build -t preprod-mxnet-serving-eia:1.4.1-cpu-py3 -f docker/1.4.1/py3/Dockerfile.eia .
 
 
