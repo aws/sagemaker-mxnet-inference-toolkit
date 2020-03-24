@@ -81,7 +81,7 @@ phases:
       - execute-command-if-has-matching-changes "$test_cmd" "test-toolkit/" "src/*.py" "setup.py" "setup.cfg" "buildspec-toolkit.yml" "docker/build_artifacts/*"
 
       # run EIA tests
-      - test_cmd="pytest test-toolkit/integration/sagemaker/test_elastic_inference.py --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $EIA_FRAMEWORK_VERSION --processor сpu --instance-type $CPU_INSTANCE_TYPE --tag $DLC_EIA_TAG  --accelerator-type $EI_ACCELERATOR_TYPE"
+      - test_cmd="pytest test-toolkit/integration/sagemaker/test_elastic_inference.py --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $EIA_FRAMEWORK_VERSION --processor cpu --instance-type $CPU_INSTANCE_TYPE --tag $DLC_EIA_TAG  --accelerator-type $EI_ACCELERATOR_TYPE"
       - execute-command-if-has-matching-changes "$test_cmd" "test-toolkit/" "src/*.py" "setup.py" "setup.cfg" "buildspec-toolkit.yml" "docker/build_artifacts/*"
 
     finally:
