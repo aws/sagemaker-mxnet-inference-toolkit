@@ -41,7 +41,7 @@ phases:
       - GENERIC_CPU_TAG="$FRAMEWORK_VERSION-mxnet-cpu-$BUILD_ID"
       - DLC_CPU_TAG="$FRAMEWORK_VERSION-dlc-cpu-$BUILD_ID"
       - DLC_GPU_TAG="$FRAMEWORK_VERSION-dlc-gpu-$BUILD_ID"
-      - DLC_EIA_TAG="$FRAMEWORK_VERSION-dlc-eia-$BUILD_ID"
+      - DLC_EIA_TAG="$EIA_FRAMEWORK_VERSION-dlc-eia-$BUILD_ID"
 
       # run local CPU integration tests (build and push the image to ECR repo)
       - test_cmd="pytest test-toolkit/integration/local --build-image --push-image --dockerfile-type mxnet.cpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_VERSION --processor cpu --tag $GENERIC_CPU_TAG"
