@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.0 (2020-03-30)
+
+### Features
+
+ * install mxnet-inference toolkit from PyPI.
+
 ## v1.2.6.post0 (2020-03-24)
 
 ### Testing and Release Infrastructure
