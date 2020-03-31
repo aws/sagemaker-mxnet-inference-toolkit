@@ -12,7 +12,7 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
-from mock import Mock, patch, MagicMock
+from mock import MagicMock, Mock, patch
 import mxnet as mx
 import pytest
 from sagemaker_inference import environment
