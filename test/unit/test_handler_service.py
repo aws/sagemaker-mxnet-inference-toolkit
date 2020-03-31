@@ -12,7 +12,7 @@
 # language governing permissions and limitations under the License.
 from __future__ import absolute_import
 
-from mock import Mock, patch
+from mock import MagicMock, Mock, patch
 import mxnet as mx
 import pytest
 from sagemaker_inference import environment
@@ -31,7 +31,15 @@ MODULE_NAME = 'module_name'
 def test_handler_service(user_module_transformer, initialize):
     service = HandlerService()
 
-    context = Mock()
+    properties = {
+        'model_dir': '/opt/ml/models/model-name'
+    }
+
+    def getitem(key):
+        return properties[key]
+
+    context = MagicMock()
+    context.system_properties.__getitem__.side_effect = getitem
     service.initialize(context)
 
     assert isinstance(service._service, Mock)
