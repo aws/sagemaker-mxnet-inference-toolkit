@@ -13,6 +13,7 @@
 from __future__ import absolute_import
 
 import importlib
+import os
 
 import mxnet as mx
 from sagemaker_inference import environment
@@ -22,6 +23,8 @@ from sagemaker_inference.transformer import Transformer
 from sagemaker_mxnet_serving_container.default_inference_handler import DefaultGluonBlockInferenceHandler, \
     DefaultMXNetInferenceHandler
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
+
+PYTHON_PATH_ENV = "PYTHONPATH"
 
 
 class HandlerService(DefaultHandlerService):
@@ -62,5 +65,13 @@ class HandlerService(DefaultHandlerService):
         """
         properties = context.system_properties
         model_dir = properties.get("model_dir")
+
+        # add model_dir/code to python path
+        code_dir_path = "{}:".format(model_dir + '/code')
+        if PYTHON_PATH_ENV in os.environ:
+            os.environ[PYTHON_PATH_ENV] = code_dir_path + os.environ[PYTHON_PATH_ENV]
+        else:
+            os.environ[PYTHON_PATH_ENV] = code_dir_path
+
         self._service = self._user_module_transformer(model_dir)
         super(HandlerService, self).initialize(context)
