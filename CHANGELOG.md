@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.2 (2020-04-01)
+
+### Bug Fixes and Other Changes
+
+ * upgrade inference-toolkit version
+
 ## v1.3.1 (2020-04-01)
 
 ### Bug Fixes and Other Changes
