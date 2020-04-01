@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.3.1 (2020-04-01)
+
+### Bug Fixes and Other Changes
+
+ * add model_dir to python path at service initialization
+ * add gluoncv
+
 ## v1.3.0 (2020-03-30)
 
 ### Features
