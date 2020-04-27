@@ -6,6 +6,7 @@ dist
 .tox/*
 .coverage
 test/resources/local_mode_lock
+test-toolkit/resources/local_mode_lock
 .idea/*
 *~
 .DS_Store

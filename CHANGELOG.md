@@ -1,5 +1,48 @@
 # Changelog
 
+## v1.3.2 (2020-04-01)
+
+### Bug Fixes and Other Changes
+
+ * upgrade inference-toolkit version
+
+## v1.3.1 (2020-04-01)
+
+### Bug Fixes and Other Changes
+
+ * add model_dir to python path at service initialization
+ * add gluoncv
+
+## v1.3.0 (2020-03-30)
+
+### Features
+
+ * install mxnet-inference toolkit from PyPI.
+
+## v1.2.6.post0 (2020-03-24)
+
+### Testing and Release Infrastructure
+
+ * refactor toolkit tests.
+
+## v1.2.6 (2020-03-11)
+
+### Bug Fixes and Other Changes
+
+ * Test MME hosting with MultiDataModel
+
+## v1.2.5 (2020-03-09)
+
+### Bug Fixes and Other Changes
+
+ * Upgrade the version of sagemaker-inference
+
+## v1.2.4 (2020-03-04)
+
+### Bug Fixes and Other Changes
+
+ * Modify HandlerService to use context model_dir
+
 ## v1.2.3 (2020-02-20)
 
 ### Bug Fixes and Other Changes

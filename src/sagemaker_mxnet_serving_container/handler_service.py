@@ -13,6 +13,7 @@
 from __future__ import absolute_import
 
 import importlib
+import os
 
 import mxnet as mx
 from sagemaker_inference import environment
@@ -22,6 +23,8 @@ from sagemaker_inference.transformer import Transformer
 from sagemaker_mxnet_serving_container.default_inference_handler import DefaultGluonBlockInferenceHandler, \
     DefaultMXNetInferenceHandler
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
+
+PYTHON_PATH_ENV = "PYTHONPATH"
 
 
 class HandlerService(DefaultHandlerService):
@@ -37,10 +40,10 @@ class HandlerService(DefaultHandlerService):
 
     """
     def __init__(self):
-        super(HandlerService, self).__init__(transformer=self._user_module_transformer())
+        self._service = None
 
     @staticmethod
-    def _user_module_transformer():
+    def _user_module_transformer(model_dir=environment.model_dir):
         user_module = importlib.import_module(environment.Environment().module_name)
 
         if hasattr(user_module, 'transform_fn'):
@@ -48,7 +51,7 @@ class HandlerService(DefaultHandlerService):
 
         model_fn = getattr(user_module, 'model_fn', DefaultMXNetInferenceHandler().default_model_fn)
 
-        model = model_fn(environment.model_dir)
+        model = model_fn(model_dir)
         if isinstance(model, mx.module.BaseModule):
             return MXNetModuleTransformer()
         elif isinstance(model, mx.gluon.block.Block):
@@ -57,3 +60,20 @@ class HandlerService(DefaultHandlerService):
             raise ValueError('Unsupported model type: {}. Did you forget to implement '
                              '`transform_fn` or `model_fn` in your entry-point?'
                              .format(model.__class__.__name__))
+
+    def initialize(self, context):
+        """Calls the Transformer method that validates the user module against
+        the SageMaker inference contract.
+        """
+        properties = context.system_properties
+        model_dir = properties.get("model_dir")
+
+        # add model_dir/code to python path
+        code_dir_path = "{}:".format(model_dir + '/code')
+        if PYTHON_PATH_ENV in os.environ:
+            os.environ[PYTHON_PATH_ENV] = code_dir_path + os.environ[PYTHON_PATH_ENV]
+        else:
+            os.environ[PYTHON_PATH_ENV] = code_dir_path
+
+        self._service = self._user_module_transformer(model_dir)
+        super(HandlerService, self).initialize(context)
