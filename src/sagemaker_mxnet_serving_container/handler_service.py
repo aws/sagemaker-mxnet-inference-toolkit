@@ -57,7 +57,9 @@ class HandlerService(DefaultHandlerService):
         elif isinstance(model, mx.gluon.block.Block):
             return Transformer(default_inference_handler=DefaultGluonBlockInferenceHandler())
         else:
-            raise ValueError('Unsupported model type: {}'.format(model.__class__.__name__))
+            raise ValueError('Unsupported model type: {}. Did you forget to implement '
+                             '`transform_fn` or `model_fn` in your entry-point?'
+                             .format(model.__class__.__name__))
 
     def initialize(self, context):
         """Calls the Transformer method that validates the user module against
