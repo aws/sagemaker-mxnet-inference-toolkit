@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.3.3 (2020-04-28)
+
+### Bug Fixes and Other Changes
+
+ * Improve error message in handler_service.py
+
 ## v1.3.2 (2020-04-01)
 
 ### Bug Fixes and Other Changes
