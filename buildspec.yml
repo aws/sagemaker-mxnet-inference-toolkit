@@ -10,7 +10,7 @@ env:
     GPU_INSTANCE_TYPE: 'p2.xlarge'
     EI_ACCELERATOR_TYPE: 'ml.eia1.medium'
     SETUP_FILE: 'setup_cmds.sh'
-    SETUP_CMDS: '#!/bin/bash\npip install --upgrade pip\npip install -U -e .\npip install -U -e .[test]'
+    SETUP_CMDS: '#!/bin/bash\npython3.6 -m pip install --upgrade pip\npython3.6 -m pip install -U -e .\npython3.6 -m pip install -U -e .[test]'
 
 phases:
   pre_build:
@@ -33,7 +33,7 @@ phases:
       - GPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-gpu-py3
 
       # build images
-      - build_cmd="python3 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO"
+      - build_cmd="python3.6 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO"
       - execute-command-if-has-matching-changes "$build_cmd" "test/" "docker/*" "buildspec.yml"
 
       # run cpu local integration tests
