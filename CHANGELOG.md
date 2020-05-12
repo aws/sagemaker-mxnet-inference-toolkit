@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.4.0 (2020-05-12)
+
+### Features
+
+ * Python 3.7 support
+
+### Testing and Release Infrastructure
+
+ * remove unused scripts.
+
 ## v1.3.3.post0 (2020-04-30)
 
 ### Testing and Release Infrastructure
