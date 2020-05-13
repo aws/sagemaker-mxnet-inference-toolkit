@@ -132,3 +132,17 @@ def skip_py2_containers(request, tag):
     if request.node.get_closest_marker('skip_py2_containers'):
         if 'py2' in tag:
             pytest.skip('Skipping python2 container with tag {}'.format(tag))
+
+
+
+@pytest.fixture(autouse=True)
+def skip_eia(request,tag):
+    if request.node.get_closest_marker('skip_eia'):
+        accelerator_type = request.config.getoption('--accelerator-type')
+        if accelerator_type!= None:
+            pytest.skip('Skip EIA Test with tag {}'.format(tag))
+
+
+            
+            
+
