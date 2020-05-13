@@ -138,5 +138,5 @@ def skip_py2_containers(request, tag):
 def skip_eia(request,tag):
     if request.node.get_closest_marker('skip_eia'):
         accelerator_type = request.config.getoption('--accelerator-type')
-        if accelerator_type!= None:
+        if accelerator_type is not None:
             pytest.skip('Skip EIA Test with tag {}'.format(tag))
