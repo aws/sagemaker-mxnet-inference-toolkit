@@ -58,7 +58,7 @@ def main():
     get_login_cmd = 'aws ecr get-login --no-include-email --region {} ' \
                     '--registry-id {}'.format(args.region, args.account)
     login_cmd = subprocess.check_output(get_login_cmd.split())
-    print('Executing docker login command: '.format(login_cmd))
+    print('Executing docker login command:{}'.format(login_cmd))
     subprocess.check_call(login_cmd.split())
 
     for arch in ['cpu', 'gpu', 'eia']:
