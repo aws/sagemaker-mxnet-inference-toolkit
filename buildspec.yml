@@ -26,6 +26,8 @@ phases:
 
       - cp -r docker/artifacts/* docker/$FRAMEWORK_FULL_VERSION/py3
       - cp -r docker/artifacts/* docker/$FRAMEWORK_FULL_VERSION/py2
+      - cp -r docker/artifacts/* docker/$EI_FRAMEWORK_VERSION/py3
+      - cp -r docker/artifacts/* docker/$EI_FRAMEWORK_VERSION/py2
 
       - CPU_PY2_TAG=$FRAMEWORK_FULL_VERSION-cpu-py2
       - CPU_PY3_TAG=$FRAMEWORK_FULL_VERSION-cpu-py3
