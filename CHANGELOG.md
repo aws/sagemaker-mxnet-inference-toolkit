@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.1 (2020-05-14)
+
+### Bug Fixes and Other Changes
+
+ * Skip GluonCV and GluonNLP for EIA containers
+ * Revert "infra: remove unused scripts."
+
 ## v1.4.0 (2020-05-12)
 
 ### Features
