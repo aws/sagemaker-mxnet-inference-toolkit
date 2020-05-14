@@ -4,10 +4,10 @@ LABEL maintainer="Amazon AI"
 
 LABEL com.amazonaws.sagemaker.capabilities.accept-bind-to-port=true
 
-ARG MMS_VERSION=1.0.5
+ARG MMS_VERSION=1.0.8
 ARG PYTHON=python3
 ARG PYTHON_VERSION=3.6.8
-ARG HEALTH_CHECK_VERSION=1.3.3
+ARG HEALTH_CHECK_VERSION=1.6.3
 
 RUN apt-get update \
  && apt-get -y install --no-install-recommends \
@@ -20,6 +20,7 @@ RUN apt-get update \
     vim \
     wget \
     zlib1g-dev \
+ && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 # See http://bugs.python.org/issue19846
@@ -67,9 +68,8 @@ RUN pip install --no-cache-dir \
     https://s3.amazonaws.com/amazonei-apachemxnet/amazonei_mxnet-1.5.1-py2.py3-none-manylinux1_x86_64.whl \
     mxnet-model-server==$MMS_VERSION \
     keras-mxnet==2.2.4.1 \
+    numpy==1.17.4 \
     onnx==1.4.1 \
-    # use sagemaker-inference version comaptible with MMS_VERSION=1.0.5
-    sagemaker-inference==1.1.0 \
     "sagemaker-mxnet-inference<2"
 
 # This is here to make our installed version of OpenCV work.
