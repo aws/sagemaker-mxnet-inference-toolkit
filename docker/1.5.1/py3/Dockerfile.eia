@@ -55,10 +55,10 @@ RUN wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSIO
 
 WORKDIR /
 
-RUN wget https://amazonei-healthcheck.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz -O /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
- && tar -xvf /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz -C /opt/ \
- && rm -rf /opt/ei_health_check_${HEALTH_CHECK_VERSION}.tar.gz \
- && chmod a+x /opt/ei_health_check/bin/health_check
+RUN wget https://amazonei-tools.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz -O /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz \
+ && tar -xvf /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz -C /opt/ \
+ && rm -rf /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz \
+ && chmod a+x /opt/ei_tools_/bin/health_check
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
