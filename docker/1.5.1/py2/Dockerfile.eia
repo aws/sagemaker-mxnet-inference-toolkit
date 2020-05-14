@@ -37,7 +37,7 @@ WORKDIR /
 RUN wget https://amazonei-tools.s3.amazonaws.com/v${HEALTH_CHECK_VERSION}/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz -O /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz \
  && tar -xvf /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz -C /opt/ \
  && rm -rf /opt/ei_tools_${HEALTH_CHECK_VERSION}.tar.gz \
- && chmod a+x /opt/ei_tools_/bin/health_check
+ && chmod a+x /opt/ei_tools/bin/health_check
 
 RUN pip install --no-cache-dir --upgrade \
     pip \
