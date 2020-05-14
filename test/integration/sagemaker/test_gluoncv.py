@@ -28,6 +28,7 @@ SCRIPT_DATA_PATH = os.path.join(GLUONCV_PATH, 'dog.jpg')
 
 
 @pytest.mark.skip_py2_containers
+@pytest.mark.skip_eia
 def test_gluoncv(sagemaker_session, ecr_image, instance_type, framework_version):
     try:  # python3
         from urllib.request import urlretrieve

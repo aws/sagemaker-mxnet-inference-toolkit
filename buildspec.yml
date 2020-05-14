@@ -34,7 +34,7 @@ phases:
 
       # build images
       - build_cmd="python3.6 scripts/build_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO"
-      - execute-command-if-has-matching-changes "$build_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$build_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
       # run cpu local integration tests
       - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --py-version 2,3 --processor cpu --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO"
@@ -42,7 +42,7 @@ phases:
 
       # push docker images to ECR
       - push_cmd="python3 scripts/publish_all.py --version $FRAMEWORK_FULL_VERSION --eia-version $EI_FRAMEWORK_VERSION --account $ACCOUNT --repo $ECR_REPO"
-      - execute-command-if-has-matching-changes "$push_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$push_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
       # launch remote gpu instance
       - create-key-pair
@@ -53,15 +53,15 @@ phases:
       - ecr_image="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
       - tox_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/local --processor gpu --py-version 2,3 --framework-version $FRAMEWORK_FULL_VERSION --region $AWS_DEFAULT_REGION --docker-base-name $ecr_image"
       - test_cmd="remote-test --test-cmd \"$tox_cmd\" --github-repo $GITHUB_REPO --branch master --setup-file $SETUP_FILE"
-      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
       # run sagemaker integration tests
       - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker -n 16 --py-version 2,3 --processor cpu,gpu --region $AWS_DEFAULT_REGION --docker-base-name $ECR_REPO --aws-id $ACCOUNT --framework-version $FRAMEWORK_FULL_VERSION --reruns 3 --reruns-delay 5"
-      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
       # run eia tests
       - test_cmd="IGNORE_COVERAGE=- tox -e py36 -- test/integration/sagemaker/test_elastic_inference.py -n 2 --py-version 2,3 --processor cpu --accelerator-type $EI_ACCELERATOR_TYPE --region $AWS_DEFAULT_REGION --docker-base-name \"$ECR_REPO-eia\" --aws-id $ACCOUNT --framework-version $EI_FRAMEWORK_VERSION"
-      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$test_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
     finally:
       # shut down remote gpu instance
@@ -70,17 +70,17 @@ phases:
 
       # remove ecr image
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY2_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY3_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$GPU_PY2_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO --region $AWS_DEFAULT_REGION --image-ids imageTag=$GPU_PY3_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO-eia --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY2_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
       - delete_cmd="aws ecr batch-delete-image --repository-name $ECR_REPO-eia --region $AWS_DEFAULT_REGION --image-ids imageTag=$CPU_PY3_TAG"
-      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml"
+      - execute-command-if-has-matching-changes "$delete_cmd" "test/" "docker/*" "buildspec.yml", "scripts/"
 
 artifacts:
   files:
