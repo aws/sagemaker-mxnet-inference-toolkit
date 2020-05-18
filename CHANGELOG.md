@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.2 (2020-05-18)
+
+### Bug Fixes and Other Changes
+
+ * Add Dockerfile MXNet 1.5.1 for Elastic Inference
+
 ## v1.4.1 (2020-05-14)
 
 ### Bug Fixes and Other Changes
