@@ -13,11 +13,9 @@ RUN apt-get update \
  && apt-get -y install --no-install-recommends \
     build-essential \
     ca-certificates \
-    checkinstall \
     curl \
     git \
     libopencv-dev \
-    libtemplate-perl \
     openjdk-8-jdk-headless \
     vim \
     wget \
@@ -89,7 +87,7 @@ RUN wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz \
  && make test \
  && make install \
  && cd ../ \
- && rm -rf openssl-1.1.1g \
+ && rm -rf openssl-* \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
