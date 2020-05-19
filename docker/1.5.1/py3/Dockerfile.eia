@@ -13,11 +13,9 @@ RUN apt-get update \
  && apt-get -y install --no-install-recommends \
     build-essential \
     ca-certificates \
-    checkinstall \
     curl \
     git \
     libopencv-dev \
-    libtemplate-perl \
     openjdk-8-jdk-headless \
     vim \
     wget \
