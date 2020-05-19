@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.3 (2020-05-19)
+
+### Bug Fixes and Other Changes
+
+ * Install openssl from source in py3 1.5.1 EI image
+
 ## v1.4.2 (2020-05-18)
 
 ### Bug Fixes and Other Changes
