@@ -78,7 +78,10 @@ RUN pip install --no-cache-dir \
 RUN wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz \
  && apt-get remove --purge -y openssl \
  && rm -rf /usr/include/openssl \
- && apt-get update && apt-get install -y ca-certificates \
+ && apt-get update \
+ && apt-get install -y \
+    ca-certificates \
+    openjdk-8-jdk-headless \
  && tar -xzvf openssl-1.1.1g.tar.gz \
  && cd openssl-1.1.1g \
  && ./config \
