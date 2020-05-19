@@ -13,9 +13,11 @@ RUN apt-get update \
  && apt-get -y install --no-install-recommends \
     build-essential \
     ca-certificates \
+    checkinstall \
     curl \
     git \
     libopencv-dev \
+    libtemplate-perl \
     openjdk-8-jdk-headless \
     vim \
     wget \
@@ -71,6 +73,29 @@ RUN pip install --no-cache-dir \
     numpy==1.17.4 \
     onnx==1.4.1 \
     "sagemaker-mxnet-inference<2"
+
+# Install openssl-1.1.1g to override default openssl-1.0.2g
+RUN wget https://www.openssl.org/source/openssl-1.1.1g.tar.gz \
+ && apt-get remove --purge -y openssl \
+ && rm -rf /usr/include/openssl \
+ && apt-get update \
+ && apt-get install -y \
+    ca-certificates \
+    openjdk-8-jdk-headless \
+ && tar -xzvf openssl-1.1.1g.tar.gz \
+ && cd openssl-1.1.1g \
+ && ./config \
+ && make \
+ && make test \
+ && make install \
+ && cd ../ \
+ && rm -rf openssl-1.1.1g \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Purging default openssl in above command also prevents the new installation of openssl
+# from finding certificates at the pre-existing path. This env variable fixes the issue.
+ENV SSL_CERT_DIR=/etc/ssl/certs
 
 # This is here to make our installed version of OpenCV work.
 # https://stackoverflow.com/questions/29274638/opencv-libdc1394-error-failed-to-initialize-libdc1394
