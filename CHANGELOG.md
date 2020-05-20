@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.4 (2020-05-20)
+
+### Bug Fixes and Other Changes
+
+ * Remove unnecessary EI packages
+
 ## v1.4.3 (2020-05-19)
 
 ### Bug Fixes and Other Changes
