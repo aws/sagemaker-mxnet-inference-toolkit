@@ -39,9 +39,9 @@ Building Images
 The Dockerfiles in this repository are intended to be used for building Docker images to run inference endpoints on `Amazon SageMaker <https://aws.amazon.com/documentation/sagemaker/>`__.
 
 The current master branch of this repository contains Dockerfiles and support code for MXNet versions 1.4.0 and higher. For previous versions, see `SageMaker MXNet container <https://github.com/aws/sagemaker-mxnet-container>`__.
-The instructions in this version of this README are for MXNet 1.4.1 and higher. For MXNet 1.4.0, see `the previous version of this file <https://github.com/aws/sagemaker-mxnet-serving-container/blob/5ec2328c20612c2aa3474c978e459b4bca033f27/README.rst>`__.
+The instructions in this version of this README are for MXNet 1.6.0 and higher. For MXNet 1.4.1 and lower, see `the previous version of this file <https://github.com/aws/sagemaker-mxnet-serving-container/blob/5ec2328c20612c2aa3474c978e459b4bca033f27/README.rst>`__.
 
-The integration tests expect the Docker images to be tagged as ``preprod-mxnet-serving:<tag>``, where ``<tag>`` looks like <mxnet_version>-<processor>-<python_version> (e.g. 1.4.1-cpu-py3).
+The integration tests expect the Docker images to be tagged as ``preprod-mxnet-serving:<tag>``, where ``<tag>`` looks like <mxnet_version>-<processor>-<python_version> (e.g. 1.6.0-cpu-py3).
 
 Example commands for building images:
 
