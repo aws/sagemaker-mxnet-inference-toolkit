@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.4.post0 (2020-06-16)
+
+### Testing and Release Infrastructure
+
+ * fix release build.
+ * Make docker folder read only, remove unused tests, update repo name, remove incorrect documentation.
+
 ## v1.4.4 (2020-05-20)
 
 ### Bug Fixes and Other Changes
