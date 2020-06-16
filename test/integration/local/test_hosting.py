@@ -17,8 +17,8 @@ import os
 from sagemaker.mxnet.model import MXNetModel
 from sagemaker.predictor import StringDeserializer
 
-import local_mode_utils
-from test.integration import RESOURCE_PATH
+from integration import RESOURCE_PATH
+from utils import local_mode_utils
 
 HOSTING_RESOURCE_PATH = os.path.join(RESOURCE_PATH, 'dummy_hosting')
 MODEL_PATH = os.path.join(HOSTING_RESOURCE_PATH, 'code')
@@ -27,11 +27,11 @@ SCRIPT_PATH = os.path.join(HOSTING_RESOURCE_PATH, 'code', 'dummy_hosting_module.
 
 # The image should use the model_fn and transform_fn defined
 # in the user-provided script when serving.
-def test_hosting(docker_image, sagemaker_local_session, local_instance_type):
+def test_hosting(image_uri, sagemaker_local_session, local_instance_type):
     model = MXNetModel('file://{}'.format(MODEL_PATH),
                        'SageMakerRole',
                        SCRIPT_PATH,
-                       image=docker_image,
+                       image=image_uri,
                        sagemaker_session=sagemaker_local_session)
 
     with local_mode_utils.lock():

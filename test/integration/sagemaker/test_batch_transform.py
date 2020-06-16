@@ -19,8 +19,8 @@ from urllib.parse import urlparse
 from sagemaker import utils
 from sagemaker.mxnet.model import MXNetModel
 
-from test.integration import RESOURCE_PATH
-from test.integration.sagemaker import timeout
+from integration import RESOURCE_PATH
+from integration.sagemaker import timeout
 
 SCRIPT_PATH = os.path.join(RESOURCE_PATH, 'default_handlers', 'model', 'code', 'empty_module.py')
 MNIST_PATH = os.path.join(RESOURCE_PATH, 'mnist')
@@ -30,13 +30,13 @@ DATA_FILE = '07.csv'
 DATA_PATH = os.path.join(MNIST_PATH, 'images', DATA_FILE)
 
 
-def test_batch_transform(sagemaker_session, ecr_image, instance_type, framework_version):
+def test_batch_transform(sagemaker_session, image_uri, instance_type, framework_version):
     s3_prefix = 'mxnet-serving/mnist'
     model_data = sagemaker_session.upload_data(path=MODEL_PATH, key_prefix=s3_prefix)
     model = MXNetModel(model_data,
                        'SageMakerRole',
                        SCRIPT_PATH,
-                       image=ecr_image,
+                       image=image_uri,
                        framework_version=framework_version,
                        sagemaker_session=sagemaker_session)
 
