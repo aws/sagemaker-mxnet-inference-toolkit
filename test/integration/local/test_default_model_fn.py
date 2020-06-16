@@ -18,8 +18,8 @@ import pytest
 import requests
 from sagemaker.mxnet.model import MXNetModel
 
-import local_mode_utils
-from test.integration import RESOURCE_PATH
+from integration import RESOURCE_PATH
+from utils import local_mode_utils
 
 DEFAULT_HANDLER_PATH = os.path.join(RESOURCE_PATH, 'default_handlers')
 MODEL_PATH = os.path.join(DEFAULT_HANDLER_PATH, 'model')
@@ -27,11 +27,11 @@ SCRIPT_PATH = os.path.join(MODEL_PATH, 'code', 'empty_module.py')
 
 
 @pytest.fixture(scope='module')
-def predictor(docker_image, sagemaker_local_session, local_instance_type):
+def predictor(image_uri, sagemaker_local_session, local_instance_type):
     model = MXNetModel('file://{}'.format(MODEL_PATH),
                        'SageMakerRole',
                        SCRIPT_PATH,
-                       image=docker_image,
+                       image=image_uri,
                        sagemaker_session=sagemaker_local_session)
 
     with local_mode_utils.lock():

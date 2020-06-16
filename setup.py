@@ -33,7 +33,7 @@ setup(
 
     long_description=read('README.rst'),
     author='Amazon Web Services',
-    url='https://github.com/aws/sagemaker-mxnet-serving-container',
+    url='https://github.com/aws/sagemaker-mxnet-inference-toolkit',
     license='Apache License 2.0',
 
     classifiers=[
@@ -52,7 +52,8 @@ setup(
     install_requires=['sagemaker-inference>=1.1.0,<=1.3.1', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
-                 'mock', 'sagemaker==1.50.18', 'docker-compose', 'mxnet==1.4.0', 'awslogs', 'requests_mock']
+                 'mock', 'sagemaker==1.62.0', 'docker-compose', 'mxnet==1.6.0', 'awslogs',
+                 'requests_mock']
     },
 
     entry_points={
