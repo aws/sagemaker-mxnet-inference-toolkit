@@ -27,6 +27,13 @@ phases:
       # define tags
       - DLC_GPU_TAG="$FRAMEWORK_VERSION-dlc-gpu-$BUILD_ID"
 
+      # TODO: remove these debugging commands
+      - df -H
+      - du -d1 -h /var/lib/docker/containers | sort -h
+      - docker system prune
+      - df -H
+      - du -d1 -h /var/lib/docker/containers | sort -h
+
       # build GPU images
       - python3.6 setup.py sdist
       - build_dir="test/container/$FRAMEWORK_VERSION"
