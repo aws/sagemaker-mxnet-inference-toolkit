@@ -12,7 +12,7 @@ env:
 phases:
   pre_build:
     commands:
-      - dockerd --storage-driver devicemapper --storage-opt dm.basesize=20G
+      - start-dockerd
       - ACCOUNT=$(aws --region $AWS_DEFAULT_REGION sts --endpoint-url https://sts.$AWS_DEFAULT_REGION.amazonaws.com get-caller-identity --query 'Account' --output text)
       - PREPROD_IMAGE="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
       - PR_NUM=$(echo $CODEBUILD_SOURCE_VERSION | grep -o '[0-9]\+')
@@ -29,6 +29,12 @@ phases:
 
       # TODO: remove these debugging commands
       - df -H
+      - docker info
+      - systemctl stop docker
+      - daemon_json = '{"storage-driver": "overlay2", "storage-opts": [ "overlay2.size=20G" ]}'
+      - echo $daemon_json > /etc/docker/daemon.json
+      - cat /etc/docker/daemon.json
+      - systemctl start docker
       - docker info
 
       # build GPU images
