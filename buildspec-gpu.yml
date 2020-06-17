@@ -29,8 +29,8 @@ phases:
 
       # TODO: remove these debugging commands
       - df -H
+      - du -h
       - docker info
-      - lsmod | grep overlay
 
       # build GPU images
       - python3.6 setup.py sdist
