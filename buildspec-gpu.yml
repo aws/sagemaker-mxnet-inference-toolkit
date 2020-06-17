@@ -30,18 +30,18 @@ phases:
       # TODO: remove these debugging commands
       - df -H
       - docker info
-      - echo "Docker daemon configuration:"
+      - sudo systemctl stop docker
+      - daemon_json = '{"storage-driver": "overlay2"}'
+      - echo $daemon_json > /etc/docker/daemon.json
       - cat /etc/docker/daemon.json
+      - sudo systemctl start docker
+      - docker info
 
       # build GPU images
       - python3.6 setup.py sdist
       - build_dir="test/container/$FRAMEWORK_VERSION"
       - $(aws ecr get-login --registry-ids $DLC_ACCOUNT --no-include-email --region $AWS_DEFAULT_REGION)
       - docker build -f "$build_dir/Dockerfile.dlc.gpu" -t $PREPROD_IMAGE:$DLC_GPU_TAG --build-arg region=$AWS_DEFAULT_REGION .
-
-      # TODO: remove these debugging commands
-      - df -H
-      - docker info
 
       # push images to ECR
       - $(aws ecr get-login --registry-ids $ACCOUNT --no-include-email --region $AWS_DEFAULT_REGION)
