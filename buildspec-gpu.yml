@@ -8,7 +8,6 @@ env:
     EI_ACCELERATOR_TYPE: 'ml.eia1.medium'
     ECR_REPO: 'sagemaker-test'
     DLC_ACCOUNT: '763104351884'
-    DAEMON_JSON: '{"storage-driver": "overlay2", "storage-opts": [ "overlay2.size=20G" ]}'
 
 phases:
   pre_build:
@@ -31,11 +30,7 @@ phases:
       # TODO: remove these debugging commands
       - df -H
       - docker info
-      - service docker stop
-      - echo $DAEMON_JSON > /etc/docker/daemon.json
-      - cat /etc/docker/daemon.json
-      - service docker start
-      - docker info
+      - lsmod | grep overlay
 
       # build GPU images
       - python3.6 setup.py sdist
