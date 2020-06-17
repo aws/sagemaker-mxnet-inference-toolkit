@@ -12,7 +12,7 @@ env:
 phases:
   pre_build:
     commands:
-      - dockerd --storage-opt dm.basesize=20G
+      - start-dockerd
       - ACCOUNT=$(aws --region $AWS_DEFAULT_REGION sts --endpoint-url https://sts.$AWS_DEFAULT_REGION.amazonaws.com get-caller-identity --query 'Account' --output text)
       - PREPROD_IMAGE="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
       - PR_NUM=$(echo $CODEBUILD_SOURCE_VERSION | grep -o '[0-9]\+')
@@ -30,6 +30,8 @@ phases:
       # TODO: remove these debugging commands
       - df -H
       - docker info
+      - echo "Docker daemon configuration:"
+      - cat /etc/docker/daemon.json
 
       # build GPU images
       - python3.6 setup.py sdist
