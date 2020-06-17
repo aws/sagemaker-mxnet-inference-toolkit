@@ -31,10 +31,10 @@ phases:
       # TODO: remove these debugging commands
       - df -H
       - docker info
-      - sudo systemctl stop docker
+      - systemctl stop docker
       - echo $DAEMON_JSON > /etc/docker/daemon.json
       - cat /etc/docker/daemon.json
-      - sudo systemctl start docker
+      - systemctl start docker
       - docker info
 
       # build GPU images
