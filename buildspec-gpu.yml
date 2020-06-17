@@ -34,7 +34,7 @@ phases:
       - service docker stop
       - echo $DAEMON_JSON > /etc/docker/daemon.json
       - cat /etc/docker/daemon.json
-      - service docker stop
+      - service docker start
       - docker info
 
       # build GPU images
