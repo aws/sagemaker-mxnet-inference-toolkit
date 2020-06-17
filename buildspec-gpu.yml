@@ -30,7 +30,7 @@ phases:
       # TODO: remove these debugging commands
       - df -H
       - du -d1 -h /var/lib/docker/containers | sort -h
-      - docker system prune
+      - docker system prune --volumes --force
       - df -H
       - du -d1 -h /var/lib/docker/containers | sort -h
 
