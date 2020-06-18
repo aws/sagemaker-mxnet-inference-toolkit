@@ -31,6 +31,9 @@ phases:
       - df -H
       - du -h
       - docker info
+      - service docker stop
+      - dockerd --storage-driver overlay2 --storage-opt overlay2.size=20G
+      - docker info
 
       # build GPU images
       - python3.6 setup.py sdist
