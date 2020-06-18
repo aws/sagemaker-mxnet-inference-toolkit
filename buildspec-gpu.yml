@@ -12,7 +12,8 @@ env:
 phases:
   pre_build:
     commands:
-      - dockerd --storage-driver devicemapper --storage-opt --dm.basesize=20G
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver overlay2 --storage-opt overlay2.size=20G&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - ACCOUNT=$(aws --region $AWS_DEFAULT_REGION sts --endpoint-url https://sts.$AWS_DEFAULT_REGION.amazonaws.com get-caller-identity --query 'Account' --output text)
       - PREPROD_IMAGE="$ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPO"
       - PR_NUM=$(echo $CODEBUILD_SOURCE_VERSION | grep -o '[0-9]\+')
