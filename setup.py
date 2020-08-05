@@ -48,8 +48,7 @@ setup(
     ],
 
     # support sagemaker-inference==1.1.0 for mxnet 1.4 eia image and
-    # sagemaker-inference==1.3.0 version for mxnet 1.6 image.
-    install_requires=['sagemaker-inference>=1.1.0,<=1.3.1', 'retrying==1.3.3'],
+    install_requires=['sagemaker-inference>=1.1.0,<=1.5.1', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
                  'mock', 'sagemaker==1.62.0', 'docker-compose', 'mxnet==1.6.0', 'awslogs',
