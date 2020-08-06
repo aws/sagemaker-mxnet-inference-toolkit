@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.5 (2020-08-06)
+
+### Bug Fixes and Other Changes
+
+ * upgrade sagemaker-inference version up to 1.5.2
+
 ## v1.4.4.post1 (2020-06-25)
 
 ### Testing and Release Infrastructure
