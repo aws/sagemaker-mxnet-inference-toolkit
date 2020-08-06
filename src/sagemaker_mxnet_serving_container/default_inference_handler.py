@@ -110,8 +110,7 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
         """
         if accept in self.VALID_CONTENT_TYPES:
             return encoder.encode(prediction.asnumpy().tolist(), accept)
-        else:
-            raise errors.UnsupportedFormatError(accept)
+        raise errors.UnsupportedFormatError(accept)
 
 
 class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
