@@ -15,14 +15,7 @@ from __future__ import absolute_import
 import os
 
 import mxnet as mx
-from sagemaker_inference import (
-    content_types,
-    decoder,
-    default_inference_handler,
-    encoder,
-    errors,
-    utils,
-)
+from sagemaker_inference import content_types, decoder, default_inference_handler, encoder, errors
 
 from sagemaker_mxnet_serving_container.utils import get_default_context, read_data_shapes
 
@@ -115,10 +108,10 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
             sagemaker_inference.errors.UnsupportedFormatError: if an unsupported content type is used.
 
         """
-        for content_type in utils.parse_accept(accept):
-            if content_type in self.VALID_CONTENT_TYPES:
-                return encoder.encode(prediction.asnumpy().tolist(), content_type)
-        raise errors.UnsupportedFormatError(accept)
+        if accept in self.VALID_CONTENT_TYPES:
+            return encoder.encode(prediction.asnumpy().tolist(), accept)
+        else:
+            raise errors.UnsupportedFormatError(accept)
 
 
 class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):

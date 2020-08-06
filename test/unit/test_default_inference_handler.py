@@ -148,19 +148,6 @@ def test_mxnet_default_output_fn(encode):
     assert isinstance(response, str)
 
 
-@patch('sagemaker_inference.encoder.encode', return_value=str())
-def test_mxnet_default_output_fn_multiple_content_types(encode):
-    prediction = mx.ndarray.zeros(1)
-    accept = 'application/unsupported, application/json, application/x-npy'
-
-    response = DefaultMXNetInferenceHandler().default_output_fn(prediction, accept)
-
-    flattened_prediction = prediction.asnumpy().tolist()
-    encode.assert_called_with(flattened_prediction, "application/json")
-
-    assert isinstance(response, str)
-
-
 def test_mxnet_default_output_fn_invalid_content_type():
     with pytest.raises(errors.UnsupportedFormatError) as e:
         DefaultMXNetInferenceHandler().default_output_fn(None, 'bad/content-type')
