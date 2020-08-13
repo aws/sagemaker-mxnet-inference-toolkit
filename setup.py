@@ -51,7 +51,7 @@ setup(
     install_requires=['sagemaker-inference>=1.1.0,<=1.5.2', 'retrying==1.3.3'],
     extras_require={
         'test': ['tox', 'flake8', 'pytest', 'pytest-cov', 'pytest-xdist', 'pytest-rerunfailures',
-                 'mock', 'sagemaker==1.72.0', 'docker-compose', 'mxnet==1.6.0', 'awslogs',
+                 'mock', 'sagemaker==1.62.0', 'docker-compose', 'mxnet==1.6.0', 'awslogs',
                  'requests_mock']
     },
 

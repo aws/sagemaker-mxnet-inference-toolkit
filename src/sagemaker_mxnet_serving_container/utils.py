@@ -58,3 +58,18 @@ def read_data_shapes(path, preferred_batch_size=1):
         data_shapes.append((name, shape))
 
     return data_names, data_shapes
+
+
+# TODO (@bvveeram): This function is also implemented in the
+# sagemaker-inference package. Once the MXNet 1.4 EIA image is deprecated, pin
+# the sagemaker-inference dependency to >= 1.5.0, remove this function, and use
+# the equivalent function in sagemaker-inference.
+def parse_accept(accept):
+    """Parses the Accept header sent with a request.
+    Args:
+        accept (str): the value of an Accept header.
+    Returns:
+        (list): A list containing the MIME types that the client is able to
+            understand.
+    """
+    return accept.replace(" ", "").split(",")

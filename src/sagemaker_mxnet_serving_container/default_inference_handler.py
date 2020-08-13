@@ -21,10 +21,13 @@ from sagemaker_inference import (
     default_inference_handler,
     encoder,
     errors,
-    utils,
 )
 
-from sagemaker_mxnet_serving_container.utils import get_default_context, read_data_shapes
+from sagemaker_mxnet_serving_container.utils import (
+    get_default_context,
+    parse_accept,
+    read_data_shapes,
+)
 
 PREFERRED_BATCH_SIZE_PARAM = 'SAGEMAKER_DEFAULT_MODEL_FIRST_DIMENSION_SIZE'
 INFERENCE_ACCELERATOR_PRESENT_ENV = 'SAGEMAKER_INFERENCE_ACCELERATOR_PRESENT'
@@ -115,7 +118,7 @@ class DefaultMXNetInferenceHandler(default_inference_handler.DefaultInferenceHan
             sagemaker_inference.errors.UnsupportedFormatError: if an unsupported content type is used.
 
         """
-        for content_type in utils.parse_accept(accept):
+        for content_type in parse_accept(accept):
             if content_type in self.VALID_CONTENT_TYPES:
                 return encoder.encode(prediction.asnumpy().tolist(), content_type)
         raise errors.UnsupportedFormatError(accept)
