@@ -66,6 +66,7 @@ def read_data_shapes(path, preferred_batch_size=1):
 # the equivalent function in sagemaker-inference.
 def parse_accept(accept):
     """Parses the Accept header sent with a request.
+
     Args:
         accept (str): the value of an Accept header.
     Returns:
