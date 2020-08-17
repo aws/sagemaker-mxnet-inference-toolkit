@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.6 (2020-08-17)
+
+### Bug Fixes and Other Changes
+
+ * Add support for Accept headers with multiple MIME types
+
 ## v1.4.5 (2020-08-06)
 
 ### Bug Fixes and Other Changes
