@@ -49,7 +49,8 @@ phases:
       # launch remote GPU instance
       - prefix='ml.'
       - instance_type=${GPU_INSTANCE_TYPE#"$prefix"}
-      - printf "create-key-pair" > .key_id
+      - create-key-pair
+      - ls
       - launch-ec2-instance --instance-type $instance_type --ami-name dlami-ubuntu
 
       # build GPU images because they are too big and take too long to build as part of the test
