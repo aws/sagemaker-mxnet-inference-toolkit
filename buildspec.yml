@@ -62,6 +62,7 @@ phases:
       # - docker push $PREPROD_IMAGE:$DLC_GPU_TAG
 
       # run GPU local integration tests
+      - printf "$SETUP_CMDS"
       - printf "$SETUP_CMDS" > $SETUP_FILE
       - dlc_cmd="$(aws ecr get-login --registry-ids $DLC_ACCOUNT --no-include-email --region $AWS_DEFAULT_REGION)"
       - test_cmd="remote-test --github-repo $GITHUB_REPO --test-cmd \"$dlc_cmd\" --setup-file $SETUP_FILE --pr-number \"$PR_NUM\""
