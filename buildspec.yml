@@ -53,6 +53,7 @@ phases:
       - cat ~/.key_id
       - ls
       - launch-ec2-instance --instance-type $instance_type --ami-name dlami-ubuntu
+      - cat ~/.ip_address    
       - ls
 
       # build GPU images because they are too big and take too long to build as part of the test
