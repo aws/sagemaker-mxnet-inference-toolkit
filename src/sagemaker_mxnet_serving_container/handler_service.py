@@ -13,8 +13,8 @@
 from __future__ import absolute_import
 
 import importlib
-import os
 import logging
+import os
 
 import mxnet as mx
 from sagemaker_inference import environment
