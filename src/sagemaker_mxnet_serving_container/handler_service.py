@@ -14,6 +14,7 @@ from __future__ import absolute_import
 
 import importlib
 import os
+import logging
 
 import mxnet as mx
 from sagemaker_inference import environment
@@ -25,7 +26,8 @@ from sagemaker_mxnet_serving_container.default_inference_handler import DefaultG
 from sagemaker_mxnet_serving_container.mxnet_module_transformer import MXNetModuleTransformer
 
 PYTHON_PATH_ENV = "PYTHONPATH"
-
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 class HandlerService(DefaultHandlerService):
     """Handler service that is executed by the model server.
@@ -44,7 +46,12 @@ class HandlerService(DefaultHandlerService):
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
+        
+        log.info(model_dir)
+        log.info(environment.Environment())
+        log.info(environment.Environment().module_name)
         user_module = importlib.import_module(environment.Environment().module_name)
+        log.info(user_module)
 
         if hasattr(user_module, 'transform_fn'):
             return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
