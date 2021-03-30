@@ -46,7 +46,7 @@ class HandlerService(DefaultHandlerService):
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
-        
+
         log.info(model_dir)
         log.info(environment.Environment())
         log.info(environment.Environment().module_name)
