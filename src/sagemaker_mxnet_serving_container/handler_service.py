@@ -29,6 +29,7 @@ PYTHON_PATH_ENV = "PYTHONPATH"
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
+
 class HandlerService(DefaultHandlerService):
     """Handler service that is executed by the model server.
 
