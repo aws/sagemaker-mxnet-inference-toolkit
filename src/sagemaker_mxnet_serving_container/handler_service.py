@@ -49,6 +49,10 @@ class HandlerService(DefaultHandlerService):
     def _user_module_transformer(model_dir=environment.model_dir):
 
         log.info(model_dir)
+        x = os.listdir(model_dir)
+        log.info(x)     
+        y = os.listdir('/opt/ml/model')
+        log.info(y)           
         log.info(environment.Environment())
         log.info(environment.Environment().module_name)
         user_module = importlib.import_module(environment.Environment().module_name)
