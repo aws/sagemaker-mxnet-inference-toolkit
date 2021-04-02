@@ -44,7 +44,10 @@ class HandlerService(DefaultHandlerService):
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
-        user_module = importlib.import_module(environment.Environment().module_name)
+        module_name = environment.Environment().module_name
+        inference_script = model_dir + '/code' + '/{}.py'.format(module_name)
+        spec = importlib.util.spec_from_file_location(module_name, inference_script)
+        user_module = importlib.util.module_from_spec(spec)
 
         if hasattr(user_module, 'transform_fn'):
             return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
