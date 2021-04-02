@@ -52,6 +52,7 @@ class UserModuleTransformFn:
 
 @patch('sagemaker_inference.environment.Environment')
 @patch('importlib.util.module_from_spec', return_value=UserModuleTransformFn())
+@patch('os.path.exists', return_value=True)
 def test_user_module_transform_fn(import_module, env):
     env.return_value.module_name = MODULE_NAME
     transformer = HandlerService._user_module_transformer()
@@ -68,6 +69,7 @@ class UserModuleModelFn:
 
 @patch('sagemaker_inference.environment.Environment')
 @patch('importlib.util.module_from_spec', return_value=UserModuleModelFn())
+@patch('os.path.exists', return_value=True)
 def test_user_module_mxnet_module_transformer(import_module, env):
     env.return_value.module_name = MODULE_NAME
     import_module.return_value.model_fn.return_value = mx.module.BaseModule()
@@ -81,6 +83,7 @@ def test_user_module_mxnet_module_transformer(import_module, env):
 @patch('sagemaker_inference.environment.Environment')
 @patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultMXNetInferenceHandler.default_model_fn')
 @patch('importlib.util.module_from_spec', return_value=object())
+@patch('os.path.exists', return_value=True)
 def test_default_inference_handler_mxnet_gluon_transformer(import_module, model_fn, env):
     env.return_value.module_name = MODULE_NAME
     model_fn.return_value = mx.gluon.block.Block()
