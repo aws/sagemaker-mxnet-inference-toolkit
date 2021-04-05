@@ -54,7 +54,8 @@ class HandlerService(DefaultHandlerService):
             user_module = importlib.util.module_from_spec(spec)
         else:
             log.info("Please include /code/{}.py in model_dir".format(module_name))
-            raise ValueError("Could not find valid inference_script path {} in model artifact".format(inference_script))
+            raise ValueError('Invalid inference_script path: Could not find '
+                     'valid inference_script path {} in model artifact'.format(inference_script))
 
         if hasattr(user_module, 'transform_fn'):
             return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())

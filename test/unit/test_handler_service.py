@@ -107,3 +107,13 @@ def test_user_module_unsupported(path_exists, module_from_spec, env):
 
     module_from_spec.assert_called_once()
     e.match('Unsupported model type')
+
+@patch('sagemaker_inference.environment.Environment')
+@patch('importlib.util.module_from_spec', return_value=UserModuleModelFn())
+def test_user_module_unsupported(module_from_spec, env):
+    env.return_value.module_name = MODULE_NAME
+
+    with pytest.raises(ValueError) as e:
+        HandlerService._user_module_transformer()
+
+    e.match('Invalid inference_script path')
