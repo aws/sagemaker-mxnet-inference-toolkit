@@ -51,13 +51,14 @@ class UserModuleTransformFn:
 
 
 @patch('sagemaker_inference.environment.Environment')
+@patch('importlib.util.spec_from_file_location', MagicMock())
 @patch('importlib.util.module_from_spec', return_value=UserModuleTransformFn())
 @patch('os.path.exists', return_value=True)
-def test_user_module_transform_fn(import_module, env, path_exists):
+def test_user_module_transform_fn(spec_from_file_location, module_from_spec, env, path_exists):
     env.return_value.module_name = MODULE_NAME
     transformer = HandlerService._user_module_transformer()
 
-    import_module.assert_called_once_with(MODULE_NAME)
+    # module_from_spec.assert_called_once_with(MODULE_NAME)
     assert isinstance(transformer._default_inference_handler, DefaultInferenceHandler)
     assert isinstance(transformer, Transformer)
 
