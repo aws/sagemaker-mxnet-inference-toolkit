@@ -76,7 +76,7 @@ def test_user_module_mxnet_module_transformer(path_exists, module_from_spec, env
 
     transformer = HandlerService._user_module_transformer()
 
-    module_from_spec.assert_called_once_with(MODULE_NAME)
+    module_from_spec.assert_called_once()
     assert isinstance(transformer, MXNetModuleTransformer)
 
 
@@ -84,13 +84,13 @@ def test_user_module_mxnet_module_transformer(path_exists, module_from_spec, env
 @patch('sagemaker_mxnet_serving_container.default_inference_handler.DefaultMXNetInferenceHandler.default_model_fn')
 @patch('importlib.util.module_from_spec', return_value=object())
 @patch('os.path.exists', return_value=True)
-def test_default_inference_handler_mxnet_gluon_transformer(import_module, model_fn, env, path_exists):
+def test_default_inference_handler_mxnet_gluon_transformer(path_exists, module_from_spec, model_fn, env):
     env.return_value.module_name = MODULE_NAME
     model_fn.return_value = mx.gluon.block.Block()
 
     transformer = HandlerService._user_module_transformer()
 
-    import_module.assert_called_once_with(MODULE_NAME)
+    module_from_spec.assert_called_once()
     model_fn.assert_called_once_with(environment.model_dir)
     assert isinstance(transformer, Transformer)
     assert isinstance(transformer._default_inference_handler, DefaultGluonBlockInferenceHandler)
@@ -98,11 +98,11 @@ def test_default_inference_handler_mxnet_gluon_transformer(import_module, model_
 
 @patch('sagemaker_inference.environment.Environment')
 @patch('importlib.util.module_from_spec', return_value=UserModuleModelFn())
-def test_user_module_unsupported(import_module, env):
+def test_user_module_unsupported(module_from_spec, env):
     env.return_value.module_name = MODULE_NAME
 
     with pytest.raises(ValueError) as e:
         HandlerService._user_module_transformer()
 
-    import_module.assert_called_once_with(MODULE_NAME)
+    module_from_spec.assert_called_once()
     e.match('Unsupported model type')
