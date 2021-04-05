@@ -98,7 +98,8 @@ def test_default_inference_handler_mxnet_gluon_transformer(path_exists, module_f
 
 @patch('sagemaker_inference.environment.Environment')
 @patch('importlib.util.module_from_spec', return_value=UserModuleModelFn())
-def test_user_module_unsupported(module_from_spec, env):
+@patch('os.path.exists', return_value=True)
+def test_user_module_unsupported(path_exists, module_from_spec, env):
     env.return_value.module_name = MODULE_NAME
 
     with pytest.raises(ValueError) as e:
