@@ -57,7 +57,7 @@ def test_user_module_transform_fn(path_exists, module_from_spec, env):
     env.return_value.module_name = MODULE_NAME
     transformer = HandlerService._user_module_transformer()
 
-    # module_from_spec.assert_called_once_with(MODULE_NAME)
+    module_from_spec.assert_called_once()
     assert isinstance(transformer._default_inference_handler, DefaultInferenceHandler)
     assert isinstance(transformer, Transformer)
 
@@ -70,13 +70,13 @@ class UserModuleModelFn:
 @patch('sagemaker_inference.environment.Environment')
 @patch('importlib.util.module_from_spec', return_value=UserModuleModelFn())
 @patch('os.path.exists', return_value=True)
-def test_user_module_mxnet_module_transformer(import_module, env, path_exists):
+def test_user_module_mxnet_module_transformer(path_exists, module_from_spec, env):
     env.return_value.module_name = MODULE_NAME
-    import_module.return_value.model_fn.return_value = mx.module.BaseModule()
+    module_from_spec.return_value.model_fn.return_value = mx.module.BaseModule()
 
     transformer = HandlerService._user_module_transformer()
 
-    import_module.assert_called_once_with(MODULE_NAME)
+    module_from_spec.assert_called_once_with(MODULE_NAME)
     assert isinstance(transformer, MXNetModuleTransformer)
 
 
