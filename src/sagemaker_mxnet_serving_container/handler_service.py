@@ -47,22 +47,10 @@ class HandlerService(DefaultHandlerService):
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
-        log.info('schenqian1')
-        log.info(model_dir)
         module_name = environment.Environment().module_name
-        log.info(module_name)
         inference_script = model_dir + '/code' + '/{}.py'.format(module_name)
-        log.info(inference_script)
         if os.path.exists(inference_script):
-            log.info('schenqian2')
-            try:
-                spec = importlib.util.spec_from_file_location(module_name, inference_script)
-            except Exception as e:
-                log.info('schenqian5')
-                log.info("{}".format(e))
-            if spec is None:
-                log.info('schenqian4')
-            log.info('schenqian3')
+            spec = importlib.util.spec_from_file_location(module_name, inference_script)
             user_module = importlib.util.module_from_spec(spec)
             log.info(user_module)
         else:
