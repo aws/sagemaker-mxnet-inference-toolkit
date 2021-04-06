@@ -13,6 +13,7 @@
 from __future__ import absolute_import
 
 import importlib
+from importlib import util
 import logging
 import os
 
