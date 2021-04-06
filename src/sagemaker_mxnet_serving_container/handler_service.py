@@ -56,6 +56,8 @@ class HandlerService(DefaultHandlerService):
         if os.path.exists(inference_script):
             log.info('schenqian2')
             spec = importlib.util.spec_from_file_location(module_name, inference_script)
+            if spec is None:
+                log.info('schenqian4')
             log.info('schenqian3')
             user_module = importlib.util.module_from_spec(spec)
             log.info(user_module)
