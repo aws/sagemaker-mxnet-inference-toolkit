@@ -47,11 +47,18 @@ class HandlerService(DefaultHandlerService):
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
+        log.info(schenqian1)
+        log.info(model_dir)
         module_name = environment.Environment().module_name
+        log.info(module_name)
         inference_script = model_dir + '/code' + '/{}.py'.format(module_name)
+        log.info(inference_script)
         if os.path.exists(inference_script):
+            log.info(schenqian2)
             spec = importlib.util.spec_from_file_location(module_name, inference_script)
+            log.info(schenqian3)
             user_module = importlib.util.module_from_spec(spec)
+            log.info(user_module)
         else:
             log.info("Please include /code/{}.py in model_dir".format(module_name))
             raise ValueError('Invalid inference_script path: Could not find '
