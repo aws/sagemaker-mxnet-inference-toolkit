@@ -21,7 +21,7 @@ from integration import RESOURCE_PATH
 from utils import local_mode_utils
 
 HOSTING_RESOURCE_PATH = os.path.join(RESOURCE_PATH, 'dummy_hosting')
-MODEL_PATH = os.path.join(RESOURCE_PATH, 'default_handlers', 'model')
+MODEL_PATH = os.path.join(HOSTING_RESOURCE_PATH, 'model.tar.gz')
 SCRIPT_PATH = os.path.join(HOSTING_RESOURCE_PATH, 'code', 'dummy_hosting_module.py')
 
 
