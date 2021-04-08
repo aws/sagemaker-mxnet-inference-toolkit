@@ -52,7 +52,7 @@ class HandlerService(DefaultHandlerService):
         except Exception as e:
             log.info("{}".format(e))
             raise ValueError('{}'.format(e))
-            
+
         if hasattr(user_module, 'transform_fn'):
             return Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
 
