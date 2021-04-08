@@ -112,5 +112,4 @@ def test_user_module_notfound(env):
     with pytest.raises(ValueError) as e:
         HandlerService._user_module_transformer()
 
-    import_module.assert_called_once_with(MODULE_NAME)
     e.match('import_module exception')
