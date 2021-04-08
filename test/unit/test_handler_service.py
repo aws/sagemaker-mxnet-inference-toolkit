@@ -103,3 +103,14 @@ def test_user_module_unsupported(import_module, env):
 
     import_module.assert_called_once_with(MODULE_NAME)
     e.match('Unsupported model type')
+
+
+@patch('sagemaker_inference.environment.Environment')
+def test_user_module_notfound(env):
+    env.return_value.module_name = MODULE_NAME
+
+    with pytest.raises(ValueError) as e:
+        HandlerService._user_module_transformer()
+
+    importlib.import_module.assert_called_once_with(MODULE_NAME)
+    e.match('import_module exception')
