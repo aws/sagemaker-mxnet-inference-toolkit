@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.1 (2021-04-12)
+
+### Bug Fixes and Other Changes
+
+ * Add exception for import_module
+
 ## v1.5.0 (2020-09-14)
 
 ### Features
