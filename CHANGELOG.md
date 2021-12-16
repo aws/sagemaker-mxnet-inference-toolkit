@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.2 (2021-12-16)
+
+### Bug Fixes and Other Changes
+
+ * Bump SM inference toolkit version to 1.5.7
+
 ## v1.5.1 (2021-04-12)
 
 ### Bug Fixes and Other Changes
