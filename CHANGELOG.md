@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.3 (2021-12-17)
+
+### Bug Fixes and Other Changes
+
+ * Upgrade MMS_VERSION to 1.1.6 in Dockerfiles.
+
 ## v1.5.2 (2021-12-16)
 
 ### Bug Fixes and Other Changes
