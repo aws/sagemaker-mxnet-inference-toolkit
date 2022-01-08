@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.4 (2022-01-08)
+
+### Bug Fixes and Other Changes
+
+ * stop pinning sagemaker-inference toolkit version (remove upper bound)
+
 ## v1.5.3 (2021-12-17)
 
 ### Bug Fixes and Other Changes
