@@ -160,9 +160,9 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
 
         # Reshape flattened CSV as specified by the model
         if content_type == content_types.CSV:
-            _, shape = data_shape
+            _, target_shape = data_shape
             # infer batch dimension from input ndarray
-            target_shape = [-1] + shape[1:]
+            target_shape[0] = -1
             ndarray = ndarray.reshape(target_shape)
 
         # Batch size is the first dimension of model input
