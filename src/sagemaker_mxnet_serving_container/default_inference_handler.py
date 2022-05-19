@@ -157,10 +157,6 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
 
         # We require model to only have one input
         [data_shape] = model.data_shapes
-        print('model.data_shapes')
-        print(model.data_shapes)
-        print('data_shape!!!!!!')
-        print(data_shape)
 
         # Reshape flattened CSV as specified by the model
         if content_type == content_types.CSV:
@@ -172,8 +168,7 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
                 target_shape = [-1] + data[1:]
             else:
                 raise TypeError("Input shape has to be list or tuple.")
-            print('target_shape!!!!!!')
-            print(target_shape)
+
             ndarray = ndarray.reshape(target_shape)
 
         # Batch size is the first dimension of model input
