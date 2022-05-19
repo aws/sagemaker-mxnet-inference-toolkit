@@ -168,7 +168,7 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
                 target_shape = [-1] + data[1:]
             else:
                 raise TypeError("Input shape has to be list or tuple.")
-       
+
             ndarray = ndarray.reshape(target_shape)
 
         # Batch size is the first dimension of model input
