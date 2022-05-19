@@ -206,7 +206,7 @@ def test_module_default_input_fn_with_csv(decode, mx_ndarray_iter, mx_ndarray):
     DefaultModuleInferenceHandler().default_input_fn(input_data, content_type, model)
 
     decode.assert_called_with(input_data, content_type)
-    ndarray.reshape.assert_called_with((1,))
+    ndarray.reshape.assert_called_with((-1,))
     init_call = call(mx.nd.array([0]), batch_size=1, last_batch_handle='pad')
     assert init_call in mx_ndarray_iter.mock_calls
 
