@@ -160,18 +160,22 @@ class DefaultModuleInferenceHandler(DefaultMXNetInferenceHandler):
 
         # Reshape flattened CSV as specified by the model
         if content_type == content_types.CSV:
-            _, target_shape = data_shape
+            _, data = data_shape
+            # infer batch dimension from input ndarray
+            if isinstance(data, tuple):
+                target_shape = (-1,) + data[1:]
+            elif isinstance(data, list):
+                target_shape = [-1] + data[1:]
+            else:
+                raise TypeError("Input shape has to be list or tuple.")
+
             ndarray = ndarray.reshape(target_shape)
 
-        # Batch size is first dimension of model input
+        # Batch size is the first dimension of model input
         model_batch_size = data_shape[1][0]
-        pad_rows = max(0, model_batch_size - ndarray.shape[0])
 
-        # If ndarray has fewer rows than model_batch_size, then pad it with zeros.
-        if pad_rows:
-            padding_shape = tuple([pad_rows] + list(ndarray.shape[1:]))
-            padding = mx.ndarray.zeros(shape=padding_shape)
-            ndarray = mx.ndarray.concat(ndarray, padding, dim=0)
+        # no padding when batch size is 1
+        pad_rows = 0 if model_batch_size == 1 else model_batch_size - ndarray.shape[0] % model_batch_size
 
         model_input = mx.io.NDArrayIter(ndarray, batch_size=model_batch_size, last_batch_handle='pad')
 
