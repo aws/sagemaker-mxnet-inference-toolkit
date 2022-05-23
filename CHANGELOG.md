@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.5 (2022-05-23)
+
+### Bug Fixes and Other Changes
+
+ * Fix input reshape in default handler
+
 ## v1.5.4 (2022-01-08)
 
 ### Bug Fixes and Other Changes
