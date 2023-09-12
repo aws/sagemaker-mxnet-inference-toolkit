@@ -42,7 +42,9 @@ class HandlerService(DefaultHandlerService):
 
     """
     def __init__(self):
-        self._service = None
+        # self._service = None
+        transformer = Transformer(default_inference_handler=DefaultMXNetInferenceHandler())
+        super(HandlerService, self).__init__(transformer=transformer)
 
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
