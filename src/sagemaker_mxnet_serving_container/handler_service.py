@@ -41,9 +41,6 @@ class HandlerService(DefaultHandlerService):
     Based on: https://github.com/awslabs/multi-model-server/blob/master/docs/custom_service.md
 
     """
-    def __init__(self):
-        self._service = None
-
     @staticmethod
     def _user_module_transformer(model_dir=environment.model_dir):
         try:
@@ -81,5 +78,11 @@ class HandlerService(DefaultHandlerService):
         else:
             os.environ[PYTHON_PATH_ENV] = code_dir_path
 
-        self._service = self._user_module_transformer(model_dir)
+        try:
+            self._service = self._user_module_transformer(model_dir)
+        except ValueError as e:
+            logging.error(f"Error determining model. {str(e)}. "
+                          "For non-mxnet models, consider using pytorch-inference DLC that leverages TorchServe.")
+            raise
+
         super(HandlerService, self).initialize(context)
