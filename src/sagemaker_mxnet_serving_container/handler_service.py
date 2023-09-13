@@ -81,7 +81,8 @@ class HandlerService(DefaultHandlerService):
         try:
             self._service = self._user_module_transformer(model_dir)
         except ValueError as e:
-             logging.error(f"Error determining model. {str(e)}. For non-mxnet models, consider using pytorch-inference DLC that leverages TorchServe.")
-             raise
+            logging.error(f"Error determining model. {str(e)}. "
+                          "For non-mxnet models, consider using pytorch-inference DLC that leverages TorchServe.")
+            raise
 
         super(HandlerService, self).initialize(context)
